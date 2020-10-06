@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-      <Header />
+      <Header class="navbar"/>
       <DemoApp />
-
-  
   </div>
 </template>
 
@@ -20,13 +18,6 @@ export default {
 </script>
 
 <style>
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-} */
 *{
   box-sizing: border-box;
   margin: 0;
@@ -36,5 +27,8 @@ body{
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.4;
   color: #2c3e50;  
+}
+.navbar {
+    min-height: 50px;
 }
 </style>

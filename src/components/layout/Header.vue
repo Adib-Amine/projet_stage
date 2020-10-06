@@ -8,7 +8,7 @@
                 </ul>
             </div>
         </div>    
-      </nav>
+    </nav>
 </template>
 
 <script>
@@ -18,5 +18,7 @@ export default {
 </script>
 
 <style scoped>
-
+nav{
+    max-height:50px;
+}
 </style>
