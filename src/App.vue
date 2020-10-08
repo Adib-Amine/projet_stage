@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-      <Header class="navbar"/>
-      <DemoApp />
+      <Header />
+      <DemoApp class="demoapp"/>
   </div>
 </template>
 
@@ -27,8 +27,5 @@ body{
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.4;
   color: #2c3e50;  
-}
-.navbar {
-    min-height: 50px;
 }
 </style>

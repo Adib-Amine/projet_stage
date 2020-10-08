@@ -28,7 +28,7 @@ export default {
         selectable: true,
         selectMirror: true,
         dayMaxEvents: true,
-        weekends: true,
+        // weekends: true,
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents
@@ -42,9 +42,9 @@ export default {
     }
   },
   methods: {
-    handleWeekendsToggle() {
-      this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
-    },
+    // handleWeekendsToggle() {
+    //   this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
+    // },
 
     handleDateSelect(selectInfo) {
       let title = prompt('Please enter a new title for your event')
@@ -86,7 +86,7 @@ export default {
           <li>Click an event to delete it</li>
         </ul>
       </div>
-      <div class='demo-app-sidebar-section'>
+      <!-- <div class='demo-app-sidebar-section'>
         <label>
           <input
             type='checkbox'
@@ -95,7 +95,7 @@ export default {
           />
           toggle weekends
         </label>
-      </div>
+      </div> -->
       <div class='demo-app-sidebar-section'>
         <h2>All Events ({{ currentEvents.length }})</h2>
         <ul>
