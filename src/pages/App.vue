@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import DemoApp from './components/DemoApp'
-import Header from './components/layout/Header'
+import DemoApp from '../components/DemoApp'
+import Header from '../components/layout/Header'
 export default {
   name: 'App',
   components: {

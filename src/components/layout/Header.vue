@@ -4,7 +4,7 @@
         <a class="navbar-brand" href="#">TimeTable.</a>
         <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a  class="nav-link" href="#">LogOut</a></li>
+                    <li class="nav-item"><a  class="nav-link" href="#">Page 2</a></li>
                 </ul>
             </div>
         </div>    
@@ -19,6 +19,6 @@ export default {
 
 <style scoped>
 nav{
-    max-height:50px;
+    max-height:45px;
 }
 </style>
