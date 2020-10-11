@@ -4,7 +4,7 @@
         <router-link class="navbar-brand" to="/">TimeTable.</router-link>
         <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"> <router-link  class="nav-link" to="/student">Student</router-link></li>
+                    <li class="nav-item"> <router-link  class="nav-link" to="/login">Login</router-link></li>
                 </ul>
             </div>
         </div>    

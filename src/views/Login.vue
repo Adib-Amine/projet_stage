@@ -54,7 +54,7 @@ export default {
         },
 
         redirect() {
-            this.$router.push({name: 'home'})
+            this.$router.push({name: 'Student'})
         }
     }
 }
@@ -67,7 +67,7 @@ export default {
 }
 .login-panel {
     position: relative;
-    padding: 200px 0;
+    padding: 100px 0;
     .alert {
         opacity: 0;
         position: absolute;
