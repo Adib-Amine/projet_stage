@@ -12,7 +12,11 @@ export const INITIAL_EVENTS = [
     endTime: '10:30:00',
     daysOfWeek:[1],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"black",
+    color: 'red',
+    //backgroundColor:"white"
+    // groupId:1 //tring. An identifier for events to be handled together as a group for certain actions e.g. when dragging or resizing events with the interaction plugin.
   },
   {
     id: createEventId(),
@@ -21,7 +25,9 @@ export const INITIAL_EVENTS = [
     endTime: '12:30:00',
     daysOfWeek:[1],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    backgroundColor:"white",
+    textColor:"black",
   },
   {
     id: createEventId(),
@@ -30,7 +36,9 @@ export const INITIAL_EVENTS = [
     endTime: '16:00:00',
     daysOfWeek:[1],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"black",
+    color: 'aqua',
   },
   {
     id: createEventId(),

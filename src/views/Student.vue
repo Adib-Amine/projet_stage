@@ -38,7 +38,11 @@ export default {
         // weekends: true, //remove weekand
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
-        eventsSet: this.handleEvents
+        eventsSet: this.handleEvents,
+        allDaySlot: false //remove all-day event
+
+
+
         /* you can update a remote database when these fire:
         eventAdd:
         eventChange:
