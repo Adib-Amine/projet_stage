@@ -22,13 +22,20 @@ export default {
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        initialView: 'dayGridMonth',
+        businessHours: {
+          // days of week. an array of zero-based day of week integers (0=Sunday)
+          daysOfWeek: [ 1, 2, 3, 4,5 ], // Monday - Sat
+          startTime: '08:30', // a start time (08am in this example)
+          endTime: '18:00', // an end time (20pm in this example)
+        },
+        initialView: 'timeGridWeek',
+        firstDay: 1, //Sunday=0, Monday=1, Tuesday=2, etc.
         initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
         editable: true,
         selectable: true,
         selectMirror: true,
         dayMaxEvents: true,
-        // weekends: true,
+        // weekends: true, //remove weekand
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents
@@ -38,7 +45,7 @@ export default {
         eventRemove:
         */
       },
-      currentEvents: []
+      currentEvents: [],
     }
   },
   methods: {
