@@ -42,11 +42,11 @@
             <div class="clearfix">
                 <div class="hint-text">Showing <b>{{currentEntrie}}</b> out of <b>{{calcEntries}}</b> entries</div>
                 <ul class="pagination">
-                    <li class="page-item"><a class="page-link" v-on:click="Previous">Previous</a></li>
+                    <li :class="{disabled : btnDisabledPrevious}" class="page-item"><a class="page-link" v-on:click="Previous">Previous</a></li>
                     <li class="page-item active"><a href="#" class="page-link">{{count}}</a></li>
                     <!-- <li class="page-item"><a href="#" class="page-link">2</a></li> -->
                     <!-- <li class="page-item"><a href="#" class="page-link">3</a></li> -->
-                    <li class="page-item"><a v-on:click="Next" class="page-link">Next</a></li>
+                    <li :class="{disabled : btnDisabledNext}" class="page-item" ><a v-on:click="Next" class="page-link" >Next</a></li>
                 </ul>
             </div>
         </div>
@@ -75,7 +75,7 @@ export default {
             limit : 5,
             count : 1,
             total: 0,
-            currentEntrie : 1
+            currentEntrie : 1,
         }
     },
     methods:{
@@ -101,7 +101,7 @@ export default {
             this.count -= 1
             this.currentEntrie -= 1
             this.fetchData()
-
+            
         },
         updateTab(id){
             // this.skip = id
@@ -126,11 +126,23 @@ export default {
 
   },
   computed:{
-      calcEntries(){
+        calcEntries(){
             if(this.total%5 == 0)
                 return Math.floor(this.total/5)
             else
                 return (Math.floor(this.total/5) + 1)
+        },
+        btnDisabledNext(){
+            if(this.currentEntrie == this.calcEntries)
+                return true
+            else
+                return false   
+        },
+        btnDisabledPrevious(){
+             if(this.currentEntrie == 1)
+                return true
+            else
+                return false   
         }
   }
 }
