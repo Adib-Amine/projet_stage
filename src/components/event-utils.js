@@ -5,7 +5,7 @@ let eventGuid = 0
 export const INITIAL_EVENTS = [
   {
     id: createEventId(),
-    title: 'Economie generale (32)	M.Hamza	salle 6',
+    title: 'Economie generale (32)	{{M.Hamza}}	salle 6', // fetch prof name from prof db
     // start: todayStr + 'T08:30:00',
     // end:todayStr + 'T10:30:00',
     startTime: '08:30:00',
@@ -14,7 +14,10 @@ export const INITIAL_EVENTS = [
     startRecur : "2020-10-01",
     endRecur   : "2021-01-01",
     textColor:"black",
-    color: 'red',
+    color: '#0275d8',
+    profId:77,
+    groupId:1
+
     //backgroundColor:"white"
     // groupId:1 //tring. An identifier for events to be handled together as a group for certain actions e.g. when dragging or resizing events with the interaction plugin.
   },
@@ -26,8 +29,12 @@ export const INITIAL_EVENTS = [
     daysOfWeek:[1],
     startRecur : "2020-10-01",
     endRecur   : "2021-01-01",
-    backgroundColor:"white",
+    backgroundColor:"#0275d8",
     textColor:"black",
+    profId:77,
+    groupId:1
+	
+
   },
   {
     id: createEventId(),
@@ -38,7 +45,9 @@ export const INITIAL_EVENTS = [
     startRecur : "2020-10-01",
     endRecur   : "2021-01-01",
     textColor:"black",
-    color: 'aqua',
+    color: '#f0ad4e',
+    profId:77,
+    groupId:0
   },
   {
     id: createEventId(),
@@ -47,7 +56,13 @@ export const INITIAL_EVENTS = [
     endTime: '18:00:00',
     daysOfWeek:[1],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"white",
+    color: '#2D2B86',
+    profId:77,
+    groupId:2
+	
+
   },
    {
     id: createEventId(),
@@ -56,7 +71,12 @@ export const INITIAL_EVENTS = [
     endTime: '10:30:00',
     daysOfWeek:[2],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"black",
+    color: '#5cb85c',
+    profId:77,
+    groupId:2
+
   },
   {
     id: createEventId(),
@@ -65,7 +85,12 @@ export const INITIAL_EVENTS = [
     endTime: '12:30:00',
     daysOfWeek:[2],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"white",
+    color: '#0275d8',
+    profId:77,
+    groupId:2
+
   },
   {
     id: createEventId(),
@@ -74,7 +99,12 @@ export const INITIAL_EVENTS = [
     endTime: '10:30:00',
     daysOfWeek:[3],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"white",
+    color: '#0275d8',
+    profId:77,
+    groupId:2
+
   },
   {
     id: createEventId(),
@@ -83,7 +113,12 @@ export const INITIAL_EVENTS = [
     endTime: '12:30:00',
     daysOfWeek:[3],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"white",
+    color: '#0275d8',
+    profId:77,
+    groupId:2
+
   },
   {
     id: createEventId(),
@@ -92,7 +127,11 @@ export const INITIAL_EVENTS = [
     endTime: '10:30:00',
     daysOfWeek:[4],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"white",
+    color: '#0275d8',
+    profId:77,
+    groupId:2
   },
   {
     id: createEventId(),
@@ -101,7 +140,12 @@ export const INITIAL_EVENTS = [
     endTime: '12:30:00',
     daysOfWeek:[4],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"white",
+    color: '#0275d8',
+    profId:77,
+    groupId:2
+
   },
   {
     id: createEventId(),
@@ -110,7 +154,12 @@ export const INITIAL_EVENTS = [
     endTime: '16:00:00',
     daysOfWeek:[4],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"white",
+    color: '#0275d8',
+    profId:77,
+    groupId:2
+
   },
   {
     id: createEventId(),
@@ -119,7 +168,12 @@ export const INITIAL_EVENTS = [
     endTime: '18:00:00',
     daysOfWeek:[4],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"white",
+    color: '#0275d8',
+    profId:77,
+    groupId:2
+
   },
   {
     id: createEventId(),
@@ -128,7 +182,12 @@ export const INITIAL_EVENTS = [
     endTime: '10:30:00',
     daysOfWeek:[5],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"white",
+    color: '#0275d8',
+    profId:77,
+    groupId:2
+
   },
   {
     id: createEventId(),
@@ -137,7 +196,12 @@ export const INITIAL_EVENTS = [
     endTime: '12:30:00',
     daysOfWeek:[5],
     startRecur : "2020-10-01",
-    endRecur   : "2021-01-01"
+    endRecur   : "2021-01-01",
+    textColor:"white",
+    color: '#0275d8',
+    profId:77,
+    groupId:2
+
   }
 ]
 

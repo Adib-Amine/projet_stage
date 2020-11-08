@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
+import CrudFilier from '../views/Crud_Filier.vue'
 
 Vue.use(VueRouter)
 
@@ -19,12 +20,13 @@ const routes = [
   {
     path: '/student',
     name: 'Student',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Student.vue')
+    component: () => import('../views/Emploi.vue')
   },
-
+  {
+    path: '/filier',
+    name : 'Filier',
+    component : CrudFilier
+  },
   // otherwise redirect to home
   { path: '*', redirect: '/' }
 ]
