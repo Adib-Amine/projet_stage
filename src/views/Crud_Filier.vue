@@ -1,16 +1,16 @@
 <template>
     <div class="main">
-        <div class="container-xl">
+    <div class="container-xl">
     <div class="table-responsive">
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-5">
-                        <h2>User <b>Management</b></h2>
+                        <h2><b>Filiers</b></h2>
                     </div>
                     <div class="col-sm-7">
-                        <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
-                        <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Export to Excel</span></a>						
+                        <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Filier<AddFilier ref="addModel" @add-filier="updateTab"/></span></a>
+                        <a  class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						
                     </div>
                 </div>
             </div>
@@ -18,92 +18,121 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>						
-                        <th>Date Created</th>
-                        <th>Role</th>
-                        <th>Status</th>
+                        <th>Label</th>						
+                        <th>Titre</th>
+                        <!-- <th>Role</th>
+                        <th>Status</th> -->
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><a href="#"><img src="/examples/images/avatar/1.jpg" class="avatar" alt="Avatar"> Michael Holz</a></td>
-                        <td>04/10/2013</td>                        
-                        <td>Admin</td>
-                        <td><span class="status text-success">&bull;</span> Active</td>
+                    <tr v-for="filier in this.info.data" :key="filier.id">
+                        <td>{{filier.id}}</td>
+                        <td>{{filier.label}}</td>
+                        <td>{{filier.title}}</td>                    
+                        <!-- <td>Admin</td>
+                        <td><span class="status text-success">&bull;</span> Active</td> -->
                         <td>
                             <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><a href="#"><img src="/examples/images/avatar/2.jpg" class="avatar" alt="Avatar"> Paula Wilson</a></td>
-                        <td>05/08/2014</td>                       
-                        <td>Publisher</td>
-                        <td><span class="status text-success">&bull;</span> Active</td>
-                        <td>
-                            <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><a href="#"><img src="/examples/images/avatar/3.jpg" class="avatar" alt="Avatar"> Antonio Moreno</a></td>
-                        <td>11/05/2015</td>
-                        <td>Publisher</td>
-                        <td><span class="status text-danger">&bull;</span> Suspended</td>                        
-                        <td>
-                            <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
-                        </td>                        
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><a href="#"><img src="/examples/images/avatar/4.jpg" class="avatar" alt="Avatar"> Mary Saveley</a></td>
-                        <td>06/09/2016</td>
-                        <td>Reviewer</td>
-                        <td><span class="status text-success">&bull;</span> Active</td>
-                        <td>
-                            <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><a href="#"><img src="/examples/images/avatar/5.jpg" class="avatar" alt="Avatar"> Martin Sommer</a></td>
-                        <td>12/08/2017</td>                        
-                        <td>Moderator</td>
-                        <td><span class="status text-warning">&bull;</span> Inactive</td>
-                        <td>
-                            <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
+                            <a v-on:click="deleteFilier(filier.id)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="clearfix">
-                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+                <div class="hint-text">Showing <b>{{currentEntrie}}</b> out of <b>{{calcEntries}}</b> entries</div>
                 <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                    <li class="page-item"><a class="page-link" v-on:click="Previous">Previous</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">{{count}}</a></li>
+                    <!-- <li class="page-item"><a href="#" class="page-link">2</a></li> -->
+                    <!-- <li class="page-item"><a href="#" class="page-link">3</a></li> -->
+                    <li class="page-item"><a v-on:click="Next" class="page-link">Next</a></li>
                 </ul>
             </div>
         </div>
     </div>
-</div>    
+    </div> 
+
+    
+
     </div>
 </template>
 
 <script>
-export default {
+import axios from 'axios'
+import AddFilier from '../components/layout/AddFilier.vue'
+// import EventBus from '../main';
 
+export default {
+    name: 'CrudFilier',
+    components : {
+        AddFilier
+    },
+    data(){
+        return{
+            info : "",
+            skip : 0,
+            limit : 5,
+            count : 1,
+            total: 0,
+            currentEntrie : 1
+        }
+    },
+    methods:{
+        // emitFetchData() {
+        //     EventBus.$emit('i-got-clicked', 'extra data');
+        // },
+        async fetchData(){
+            axios
+            .get("http://localhost:8000/filiers?skip="+this.skip+"&limit="+this.limit)
+            .then(response => (this.info = response))
+        },
+        showModel(){
+            this.$refs.addModel.show();
+        },
+        Next(){
+            this.skip += 5
+            this.count += 1
+            this.currentEntrie += 1
+            this.fetchData()
+        },
+        Previous(){
+            this.skip -= 5
+            this.count -= 1
+            this.currentEntrie -= 1
+            this.fetchData()
+
+        },
+        updateTab(id){
+            // this.skip = id
+            // this.fetchData()
+            console.log(id)
+        },
+        async deleteFilier(id){
+            await axios.delete('http://localhost:8000/filiers/'+id)
+                //.then(this.fetchData());
+            await this.fetchData();
+        },
+        getTotalEntries(){
+            axios
+            .get("http://localhost:8000/filiers/filier/count")
+            .then(response => (this.total = response.data))
+        },
+        
+    },
+    mounted () {
+    this.fetchData(),
+    this.getTotalEntries()
+
+  },
+  computed:{
+      calcEntries(){
+            if(this.total%5 == 0)
+                return Math.floor(this.total/5)
+            else
+                return (Math.floor(this.total/5) + 1)
+        }
+  }
 }
 </script>
 
@@ -194,6 +223,7 @@ table.table td a {
     display: inline-block;
     text-decoration: none;
 }
+
 table.table td a:hover {
     color: #2196F3;
 }
@@ -202,6 +232,9 @@ table.table td a.settings {
 }
 table.table td a.delete {
     color: #F44336;
+}
+table.table td a.delete:hover {
+    color: #4A1612;
 }
 table.table td i {
     font-size: 19px;
