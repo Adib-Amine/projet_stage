@@ -9,7 +9,8 @@
                         <h2><b>Filiers</b></h2>
                     </div>
                     <div class="col-sm-7">
-                        <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Filier<AddFilier ref="addModel" @add-filier="updateTab"/></span></a>
+                        <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Filier<AddFilier ref="addModel" /></span></a>
+                        <!-- @add-filier="updateTab" -->
                         <a  class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						
                     </div>
                 </div>
@@ -20,8 +21,6 @@
                         <th>#</th>
                         <th>Label</th>						
                         <th>Titre</th>
-                        <!-- <th>Role</th>
-                        <th>Status</th> -->
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -30,8 +29,7 @@
                         <td>{{filier.id}}</td>
                         <td>{{filier.label}}</td>
                         <td>{{filier.title}}</td>                    
-                        <!-- <td>Admin</td>
-                        <td><span class="status text-success">&bull;</span> Active</td> -->
+                        <!-- <td><span class="status text-success">&bull;</span> Active</td> -->
                         <td>
                             <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
                             <a v-on:click="deleteFilier(filier.id)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
@@ -44,8 +42,6 @@
                 <ul class="pagination">
                     <li :class="{disabled : btnDisabledPrevious}" class="page-item"><a class="page-link" v-on:click="Previous">Previous</a></li>
                     <li class="page-item active"><a href="#" class="page-link">{{count}}</a></li>
-                    <!-- <li class="page-item"><a href="#" class="page-link">2</a></li> -->
-                    <!-- <li class="page-item"><a href="#" class="page-link">3</a></li> -->
                     <li :class="{disabled : btnDisabledNext}" class="page-item" ><a v-on:click="Next" class="page-link" >Next</a></li>
                 </ul>
             </div>
@@ -61,7 +57,6 @@
 <script>
 import axios from 'axios'
 import AddFilier from '../components/layout/AddFilier.vue'
-// import EventBus from '../main';
 
 export default {
     name: 'CrudFilier',
@@ -79,9 +74,6 @@ export default {
         }
     },
     methods:{
-        // emitFetchData() {
-        //     EventBus.$emit('i-got-clicked', 'extra data');
-        // },
         async fetchData(){
             axios
             .get("http://localhost:8000/filiers?skip="+this.skip+"&limit="+this.limit)
@@ -89,6 +81,7 @@ export default {
         },
         showModel(){
             this.$refs.addModel.show();
+            this.getTotalEntries()
         },
         Next(){
             this.skip += 5
@@ -103,15 +96,10 @@ export default {
             this.fetchData()
             
         },
-        updateTab(id){
-            // this.skip = id
-            // this.fetchData()
-            console.log(id)
-        },
         async deleteFilier(id){
             await axios.delete('http://localhost:8000/filiers/'+id)
-                //.then(this.fetchData());
             await this.fetchData();
+            this.getTotalEntries()
         },
         getTotalEntries(){
             axios
@@ -122,7 +110,10 @@ export default {
     },
     mounted () {
     this.fetchData(),
-    this.getTotalEntries()
+    this.getTotalEntries(),
+    this.$root.$on("getTotalEntries",() => {
+        return this.getTotalEntries()
+    })
 
   },
   computed:{
@@ -132,18 +123,18 @@ export default {
             else
                 return (Math.floor(this.total/5) + 1)
         },
+        btnDisabledPrevious(){
+             if(this.currentEntrie == 1)
+                return true
+            else
+                return false   
+        },
         btnDisabledNext(){
             if(this.currentEntrie == this.calcEntries)
                 return true
             else
                 return false   
         },
-        btnDisabledPrevious(){
-             if(this.currentEntrie == 1)
-                return true
-            else
-                return false   
-        }
   }
 }
 </script>

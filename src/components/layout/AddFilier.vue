@@ -50,7 +50,7 @@
           ></b-form-input>
         </b-form-group>
 
-        <div v-show="Error">
+        <div v-show="error">
           {{errorMessage}}
         </div>
 
@@ -61,8 +61,6 @@
 
 <script>
 import axios from 'axios'
-// import EventBus from '../../main';
-
   export default {
     data() {
       return {
@@ -70,12 +68,9 @@ import axios from 'axios'
         labelState: null,
         title: '',
         titleState : null,
-        filierId : null,
         errorMessage : null,
         filier : {},
-        Error : false,
-        loading: true,
-        errored: false
+        error : false,
       }
     },
     methods: {
@@ -86,27 +81,13 @@ import axios from 'axios'
       }catch(err){
         return err.response
       }
-          
-          // .then(response => { 
-          //   //this.filierId = response.data.id
-          //   // this.errored = false
-          //   return response
-          //   })
-          // .catch(error => {
-          //   // this.errorMessage = error.message;
-          //   // this.errored = true
-          //   // this.Error = true
-          //   // this.resetModal()
-          //   //console.error("There was an error!", error);
-          //   return error.response
-          // })
-          // // .finally(() => { 
-          // //   return this.errored
-          // // })
       },
       
       show(){
           this.$refs.modal.show()
+      },
+      updateTotal(){
+        this.$root.$emit('getTotalEntries')
       },
       checkFormValidity() {
         const validLabel = this.$refs.label.checkValidity()
@@ -115,8 +96,7 @@ import axios from 'axios'
         this.titleState = validTitle
         const valid = validLabel && validTitle
         return valid
-      },
-      
+      },    
       resetModal() {
         this.label = ''
         this.title = ''
@@ -138,12 +118,11 @@ import axios from 'axios'
         // Push the label to submitted labels
         this.filier.label = this.label
         this.filier.title = this.title
-        
         //this.checkRequestError()
-        this.Error = false
+        this.error = false
         const res = await this.addfilier()
         if(res.status !== 200){
-          this.Error = true
+          this.error = true
           this.errorMessage = res.data.detail
           return 
         }
@@ -151,27 +130,10 @@ import axios from 'axios'
          this.$nextTick(() => {
                         this.$bvModal.hide('modal-prevent-closing')
                       })
-        // EventBus.$on('i-got-clicked', data => {
-        //       console.log(data)
-        // })
-        this.$emit('add-filier',res.data)
+        //call getTotal methode from parent componet to update total
+        this.updateTotal()
       }
     },
-    // created:{
-    //   test(){
-    //       this.$parent.TestMethode()
-    //       console.log("created methode")
-    //   }
-    //}
-    // computed : {
-    //   checkRequestError(){
-    //       if(!this.errorMessage)
-    //         this.Error = false
-    //       else{
-    //         this.Error = true
-    //       }
-    //   },
-    // }
     
   }
 </script>
