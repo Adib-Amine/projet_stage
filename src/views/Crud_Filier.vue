@@ -11,7 +11,7 @@
                     <div class="col-sm-7">
                         <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Filier<AddFilier ref="addModel" /></span></a>
                         <!-- @add-filier="updateTab" -->
-                        <a  class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						
+                        <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						
                     </div>
                 </div>
             </div>
@@ -29,14 +29,14 @@
                         <td>{{filier.id}}</td>
                         <td>{{filier.label}}</td>
                         <td>{{filier.title}}</td>                    
-                        <!-- <td><span class="status text-success">&bull;</span> Active</td> -->
                         <td>
-                            <a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
+                            <a v-on:click="showModelUpdate(filier.id)" class="settings" ><i class="material-icons">&#xE8B8;</i></a>
                             <a v-on:click="deleteFilier(filier.id)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <UpdateFilier ref="updateModel"/>
             <div class="clearfix">
                 <div class="hint-text">Showing <b>{{currentEntrie}}</b> out of <b>{{calcEntries}}</b> entries</div>
                 <ul class="pagination">
@@ -57,11 +57,14 @@
 <script>
 import axios from 'axios'
 import AddFilier from '../components/layout/AddFilier.vue'
+import UpdateFilier from '../components/layout/UpdateFilier.vue'
+
 
 export default {
     name: 'CrudFilier',
     components : {
-        AddFilier
+        AddFilier,
+        UpdateFilier
     },
     data(){
         return{
@@ -71,6 +74,7 @@ export default {
             count : 1,
             total: 0,
             currentEntrie : 1,
+            reqfilier : {}
         }
     },
     methods:{
@@ -79,9 +83,29 @@ export default {
             .get("http://localhost:8000/filiers?skip="+this.skip+"&limit="+this.limit)
             .then(response => (this.info = response))
         },
+        async fetchFilier(id){
+            const res = await  axios.get("http://localhost:8000/filiers/"+id)
+            return res
+            // .then(response =>{this.reqfilier = response
+                //         return response
+                //         })
+                // .catch(error => {
+                //         console.error("There was an error!", error);
+                // })    
+        },
+        test(){
+            alert("test")
+        },
         showModel(){
             this.$refs.addModel.show();
             this.getTotalEntries()
+        },
+        async showModelUpdate(id){
+            const res = await this.fetchFilier(id)
+            //console.log("id : ",id)
+            //console.log(res)
+            this.$refs.updateModel.show(res.data)
+            //console.log(id)
         },
         Next(){
             this.skip += 5
@@ -96,8 +120,14 @@ export default {
             this.fetchData()
             
         },
+        // updateTab(id){
+        //     // this.skip = id
+        //     // this.fetchData()
+        //     console.log(id)
+        // },
         async deleteFilier(id){
             await axios.delete('http://localhost:8000/filiers/'+id)
+                //.then(this.fetchData());
             await this.fetchData();
             this.getTotalEntries()
         },
@@ -113,6 +143,9 @@ export default {
     this.getTotalEntries(),
     this.$root.$on("getTotalEntries",() => {
         return this.getTotalEntries()
+    }),
+    this.$root.$on("fetchData",() => {
+        return this.fetchData()
     })
 
   },
@@ -232,6 +265,9 @@ table.table td a:hover {
 }
 table.table td a.settings {
     color: #2196F3;
+}
+table.table td a.settings:hover {
+    color: #0f406b;
 }
 table.table td a.delete {
     color: #F44336;

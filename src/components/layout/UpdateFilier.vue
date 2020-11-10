@@ -1,12 +1,11 @@
 <template>
     <b-modal
       id="modal-prevent-closing"
-      ref="modal"
-      title="Submit Your Label"
+      ref="modalUpdate"
+      :title="`Update Your Label ${filierId}`" 
       @show="resetModal"
       @hidden="resetModal"
-      @ok="handleOk"
-    >
+      @ok="handleOk">
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
           :state="labelState"
@@ -18,6 +17,7 @@
             id="label-input"
             v-model="label"
             :state="labelState"
+            v-on:change="detectchange"
             ref="label"
             required
           ></b-form-input>
@@ -34,6 +34,7 @@
             v-model="title"
             ref="title"
             :state="titleState"
+            v-on:change="detectchange"
             required
           ></b-form-input>
         </b-form-group>
@@ -41,7 +42,6 @@
         <div v-show="error">
           {{errorMessage}}
         </div>
-
       </form>
     </b-modal>
   <!-- </div> -->
@@ -56,28 +56,29 @@ import axios from 'axios'
         labelState: null,
         title: '',
         titleState : null,
+        filierId : null,
         errorMessage : null,
         filier : {},
         error : false,
+        modelChange : false
       }
     },
     methods: {
-      async addfilier(){
-      try{
-        const res = await axios.post("http://localhost:8000/filiers", this.filier)
-        return res
-      }catch(err){
-        return err.response
-      }
+      show(reqfilier){
+          this.$refs.modalUpdate.show()
+          this.label = reqfilier.label
+          this.title = reqfilier.title
+          this.filierId = reqfilier.id 
       },
-      
-      show(){
-          this.$refs.modal.show()
+      async updateFilier(id){
+        try{
+        const res = await axios.post("http://localhost:8000/filiers/"+id, this.filier)
+          return res
+        }catch(err){
+          return err.response
+        }
       },
-      updateTotal(){
-        this.$root.$emit('getTotalEntries')
-      },
-       updateData(){
+      updateData(){
         this.$root.$emit('fetchData')
       },
       checkFormValidity() {
@@ -94,8 +95,12 @@ import axios from 'axios'
         this.filier = {}
         this.labelState = null
         this.titleState = null
+        this.modelChange = false
         this.errorMessage = null
         this.error = false
+      },
+      detectchange(){
+        this.modelChange = true
       },
       handleOk(bvModalEvt) {
         // Prevent modal from closing
@@ -108,26 +113,26 @@ import axios from 'axios'
         if (!this.checkFormValidity()) {
           return
         }
-        // Push the label to submitted labels
-        this.filier.label = this.label
-        this.filier.title = this.title
-        //this.checkRequestError()
-        this.error = false
-        const res = await this.addfilier()
-        if(res.status !== 200){
-          this.error = true
-          this.errorMessage = res.data.detail
-          return 
+        if(this.modelChange){
+          this.filier.label = this.label
+          this.filier.title = this.title
+          //this.checkRequestError()
+          this.error = false
+          const res = await this.updateFilier(this.filierId)
+          if(res.status !== 200){
+            this.error = true
+            this.errorMessage = res.data.detail
+            return 
+          }
         }
         // Hide the modal 
          this.$nextTick(() => {
                         this.$bvModal.hide('modal-prevent-closing')
                       })
-        //call getTotal methode from parent componet to update total
-        this.updateTotal()
+        //Send data to Crud_Filier
+        //this.$emit('add-filier',res.data)
         this.updateData()
       }
     },
-    
   }
 </script>
