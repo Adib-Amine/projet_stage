@@ -48,17 +48,19 @@
                     </div>
                     </div>
             </div>
-
+        </div>        
         </div>
-        
-        </div>
+        <AddTimeslot ref="addtimeslot"/>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
-
+import AddTimeslot from '../components/layout/AddTimeslot.vue'
 export default {
+    components : {
+        AddTimeslot
+    },
     data(){
         return{
             info : "",
@@ -92,6 +94,7 @@ export default {
             return "EmptyCell"
         },
         selectedTimeslot(row,cell){
+            this.$refs.addtimeslot.showAddTimeslot();
             console.log("row : ",row," cell: ",cell)
         }
     },

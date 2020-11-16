@@ -1,60 +1,97 @@
 <template>
-  <div>
-    <b-button v-b-modal.modal-prevent-closing>Open Modal</b-button>
-
-    <div class="mt-3">
-      Submitted Names:
-      <div v-if="submittedNames.length === 0">--</div>
-      <ul v-else class="mb-0 pl-3">
-        <li v-for="name in submittedNames">{{ name }}</li>
-      </ul>
-    </div>
-
-    <b-modal
+  <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      title="Submit Your Name"
+      title="!!!! Delete Title Bar !!!!" 
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
-        <b-form-group
-          :state="nameState"
-          label="Name"
-          label-for="name-input"
-          invalid-feedback="Name is required"
-        >
-          <b-form-input
-            id="name-input"
-            v-model="name"
-            :state="nameState"
-            required
-          ></b-form-input>
+        <b-form-group :state="titleState" label="Matiere" label-for="matiere-input"
+          invalid-feedback="Matiere is required">
+          <b-form-input id="matiere-input" v-model="title" :state="titleState" ref="title" required>
+          </b-form-input>
         </b-form-group>
+
+        <b-form-group label="Description" label-for="descr-input">
+          <b-form-input id="descr-input" v-model="descr" ref="descr">
+          </b-form-input>
+        </b-form-group>
+        
+        <b-form-group 
+          :state="profState" label="Prof" label-for="prof-input" invalid-feedback="Prof is required"
+        >
+          <b-form-input 
+              id="prof-input" v-model="profId" :state="profState" ref="prof" list="prof-list" required>
+          </b-form-input>
+          <datalist id="prof-list">
+              <option>Manual Option</option>
+              <option v-for="variant in profList" :key="variant">{{ variant }}</option>
+          </datalist>
+        </b-form-group>
+        
+        <b-form-group label="Salle" label-for="salle-input">
+          <b-form-input id="salle-input" v-model="salle" ref="salle">
+          </b-form-input>
+        </b-form-group>
+
+        
+
+
+
+        <!-- <div v-show="error">
+          {{errorMessage}}
+        </div> -->
+
       </form>
     </b-modal>
-  </div>
 </template>
 
 <script>
+import axios from 'axios'
   export default {
     data() {
       return {
-        name: '',
-        nameState: null,
-        submittedNames: []
+        title: '',
+        titleState: null,
+        profId : null,
+        profState : null,
+        profList: [],
+        descr : '',
+        startRecur : '2020-11-16',
+        endRecur : '2021-01-16',
+        salle : null,
+        info : null,
+
       }
     },
     methods: {
+      async fetchDataProf(){
+            const total  = await axios.get("http://localhost:8000/profs/prof/count")
+            const profs = await axios.get("http://localhost:8000/profs?limit="+total.data)
+            if(profs.status === 200){
+              profs.data.forEach(prof => {
+                this.profList.push(prof.username)
+              })
+            }
+      },
+      showAddTimeslot(){
+          this.$refs.modal.show()
+      },
       checkFormValidity() {
-        const valid = this.$refs.form.checkValidity()
-        this.nameState = valid
+        const validTitle = this.$refs.title.checkValidity()
+        const validProf = this.$refs.prof.checkValidity()
+        this.titleState = validTitle
+        this.profState = validProf
+        const valid = validTitle && validProf
         return valid
       },
       resetModal() {
-        this.name = ''
-        this.nameState = null
+        this.title = ''
+        this.titleState = null
+        this.profId = null
+        this.profState = null
       },
       handleOk(bvModalEvt) {
         // Prevent modal from closing
@@ -67,13 +104,16 @@
         if (!this.checkFormValidity()) {
           return
         }
-        // Push the name to submitted names
-        this.submittedNames.push(this.name)
         // Hide the modal manually
         this.$nextTick(() => {
           this.$bvModal.hide('modal-prevent-closing')
         })
       }
-    }
+    },
+    mounted() {
+      this.fetchDataProf()
+    },
+    
+    
   }
 </script>
