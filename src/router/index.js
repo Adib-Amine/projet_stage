@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import CrudFilier from '../views/Crud_Filier.vue'
 import CrudEmploi from '../views/Crud_Emploi.vue'
+import CrudProf from '../views/Crud_Prof.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -26,6 +28,11 @@ const routes = [
     path: '/filier',
     name : 'Filier',
     component : CrudFilier
+  },
+  {
+    path: '/profs',
+    name : 'Profs',
+    component : CrudProf
   },
   {
     path : '/create_emploi',

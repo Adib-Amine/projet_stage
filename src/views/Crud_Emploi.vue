@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container bg-white text-dark">
         <b-dropdown :text="Text" block variant="primary" class="m-2" menu-class="w-100">
         <div v-for="filier in this.info.data" :key="filier.id">
             <b-dropdown-item v-on:click="selectedFilier(filier)">
@@ -10,7 +10,7 @@
         <div class="row">
             <div class="Table">
             <div class="Title">
-                    <br><div>{{filier_title}}</div><br>
+                    <div>{{filier_title}}</div><br>
             </div>
             <div class="Heading">
                 <div class="EmptyCell col-xs">
@@ -37,8 +37,8 @@
                 <div class="CellDays col-xs">
                     <div class="box">{{Days[j-1]}}</div>
                 </div>
-                    <div class="col-xs" :class="classCell(i)" v-for="i in 5" :key="i">
-                    <div class="box" v-if="i != 3">
+                    <div class="col-xs" :class="classCell(i)" v-for="i in 5" :key="i" >
+                    <div class="box" v-if="i != 3" v-on:click="selectedTimeslot(j,i)">
                         {{module.title}} <br>
                         {{module.nbr}} <br>
                         {{module.prof}} <br>
@@ -50,6 +50,7 @@
             </div>
 
         </div>
+        
         </div>
     </div>
 </template>
@@ -89,6 +90,9 @@ export default {
             if(ind != 3)
                 return "Cell"
             return "EmptyCell"
+        },
+        selectedTimeslot(row,cell){
+            console.log("row : ",row," cell: ",cell)
         }
     },
     mounted() {
@@ -123,6 +127,7 @@ export default {
 .Table
 {
     display: table;
+    margin-bottom:10px;
 }
 .Heading
 {
