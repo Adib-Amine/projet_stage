@@ -6,11 +6,11 @@
             <div class="table-title bg-primary">
                 <div class="row">
                     <div class="col-sm-5">
-                        <h2><b>Filiers</b></h2>
+                        <h2><b>Profs</b></h2>
                     </div>
                     <div class="col-sm-7">
-                        <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Filier<AddFilier ref="addModel" /></span></a>
-                        <!-- @add-filier="updateTab" -->
+                        <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Prof<AddProf ref="addProfModel" /></span></a>
+                        <!-- @add-prof="updateTab" -->
                         <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						
                     </div>
                 </div>
@@ -19,31 +19,35 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Label</th>						
-                        <th>Titre</th>
+                        <th>Nom</th>						
+                        <th>Prenom</th>
+                        <th>Username</th>
+                        <th>Password</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="filier in this.info.data" :key="filier.id">
-                        <td>{{filier.id}}</td>
-                        <td>{{filier.label}}</td>
-                        <td>{{filier.title}}</td>                    
+                    <tr v-for="prof in this.info.data" :key="prof.id">
+                        <td>{{prof.id}}</td>
+                        <td>{{prof.lastName}}</td>
+                        <td>{{prof.firstName}}</td>
+                        <td>{{prof.username}}</td>
+                        <td>{{prof.password}}</td>                    
                         <td>
-                            <a v-on:click="showModelUpdate(filier.id)" class="settings" ><i class="material-icons">&#xE8B8;</i></a>
-                            <!-- <a v-on:click="deleteFilier(filier.id)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a> -->
-                            <a v-on:click="coonfirmDelet(filier)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
+                            <a v-on:click="showModelUpdate(prof.id)" class="settings" ><i class="material-icons">&#xE8B8;</i></a>
+                            <!-- <a v-on:click="deleteProf(prof.id)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a> -->
+                            <a v-on:click="confirmDelet(prof)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <b-modal id="bv-modal-delete" hide-footer @hidden="resetModal">
                 <div class="d-block text-center">
-                    <h3>Etes-vous sûr que vous voulez supprimer : {{selectedFilier.label}}?</h3>
+                    <h3>Etes-vous sûr que vous voulez supprimer : {{selectedProf.lastName +" " +selectedProf.firstName}}?</h3>
                 </div>
-                <b-button class="mt-3" variant="danger" block @click="deleteFilier()">Delete</b-button>
+                <b-button class="mt-3" variant="danger" block @click="deleteProf()">Delete</b-button>
             </b-modal>
-            <UpdateFilier ref="updateModel"/>
+            <UpdateProf ref="updateProfModel"/>
             <div class="clearfix">
                 <div class="hint-text">Showing <b>{{currentEntrie}}</b> out of <b>{{calcEntries}}</b> entries</div>
                 <ul class="pagination">
@@ -63,15 +67,15 @@
 
 <script>
 import axios from 'axios'
-import AddFilier from '../components/layout/AddFilier.vue'
-import UpdateFilier from '../components/layout/UpdateFilier.vue'
+import AddProf from '../components/layout/AddProf.vue'
+import UpdateProf from '../components/layout/UpdateProf.vue'
 
 
 export default {
-    name: 'CrudFilier',
+    name: 'CrudProf',
     components : {
-        AddFilier,
-        UpdateFilier
+        AddProf,
+        UpdateProf
     },
     data(){
         return{
@@ -81,73 +85,70 @@ export default {
             count : 1,
             total: 0,
             currentEntrie : 1,
-            selectedFilier : {},
+            selectedProf : {},
         }
     },
     methods:{
-        async fetchData(){
+        async fetchDataProf(){
             axios
-            .get("http://localhost:8000/filiers?skip="+this.skip+"&limit="+this.limit)
+            .get("http://localhost:8000/profs?skip="+this.skip+"&limit="+this.limit)
             .then(response => (this.info = response))
         },
-        async fetchFilier(id){
-            const res = await  axios.get("http://localhost:8000/filiers/"+id)
+        async fetchProf(id){
+            const res = await  axios.get("http://localhost:8000/profs/"+id)
             return res 
         },
-        coonfirmDelet(id){
-            this.selectedFilier = id
-            //this.$bvModal.hide('modal-prevent-closing')
-            //$bvModal.show('bv-modal-delete')
+        confirmDelet(id){
+            this.selectedProf = id
             this.$bvModal.show('bv-modal-delete')
         },
         resetModal(){
-            this.selectedFilier = {}
+            this.selectedProf = {}
         },
         showModel(){
-            this.$refs.addModel.show();
-            this.getTotalEntries()
+            this.$refs.addProfModel.showProf();
+            this.getTotalEntriesProf()
         },
         async showModelUpdate(id){
-            const res = await this.fetchFilier(id)
-            this.$refs.updateModel.show(res.data)
+            const res = await this.fetchProf(id)
+            this.$refs.updateProfModel.show(res.data)
         },
         Next(){
             this.skip += 10
             this.count += 1
             this.currentEntrie += 1
-            this.fetchData()
+            this.fetchDataProf()
         },
         Previous(){
             this.skip -= 10
             this.count -= 1
             this.currentEntrie -= 1
-            this.fetchData()
+            this.fetchDataProf()
             
         },
-        async deleteFilier(){
-            await axios.delete('http://localhost:8000/filiers/'+this.selectedFilier.id)
-                //.then(this.fetchData());
-            await this.fetchData();
-            this.getTotalEntries()
+        async deleteProf(){
+            await axios.delete('http://localhost:8000/profs/'+this.selectedProf.id)
+            await this.fetchDataProf();
+            this.getTotalEntriesProf()
             this.resetModal
             this.$bvModal.hide('bv-modal-delete')
 
         },
-        getTotalEntries(){
+        getTotalEntriesProf(){
             axios
-            .get("http://localhost:8000/filiers/filier/count")
+            .get("http://localhost:8000/profs/prof/count")
             .then(response => (this.total = response.data))
         },
         
     },
     mounted () {
-    this.fetchData(),
-    this.getTotalEntries(),
-    this.$root.$on("getTotalEntries",() => {
-        return this.getTotalEntries()
+    this.fetchDataProf(),
+    this.getTotalEntriesProf(),
+    this.$root.$on("getTotalEntriesProf",() => {
+        return this.getTotalEntriesProf()
     }),
-    this.$root.$on("fetchData",() => {
-        return this.fetchData()
+    this.$root.$on("fetchDataProf",() => {
+        return this.fetchDataProf()
     })
 
   },

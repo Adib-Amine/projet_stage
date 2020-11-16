@@ -1,7 +1,7 @@
 <template>
     <b-modal
       id="modal-prevent-closing"
-      ref="modal"
+      ref="modalUpdateProf"
       title="Ajouter nouveau prof" 
       @show="resetModal"
       @hidden="resetModal"
@@ -71,7 +71,6 @@
 
       </form>
     </b-modal>
-  <!-- </div> -->
 </template>
 
 <script>
@@ -87,27 +86,31 @@ import axios from 'axios'
         usernameState : null,
         password: '',
         passwordState : null,
+        profId : null,
         errorMessage : null,
         prof : {},
         error : false,
+        modelChange : false
       }
     },
     methods: {
-      async addprof(){
-      try{
-        const res = await axios.post("http://localhost:8000/profs", this.prof)
-        return res
-      }catch(err){
-        return err.response
-      }
+      show(reqProf){
+          this.$refs.modalUpdateProf.show()
+          this.name = reqProf.lastName
+          this.prenom = reqProf.firstName
+          this.username = reqProf.username
+          this.password = reqProf.password
+          this.profId = reqProf.id 
       },
-      showProf(){
-          this.$refs.modal.show()
+      async updateProf(id){
+        try{
+        const res = await axios.post("http://localhost:8000/profs/"+id, this.prof)
+          return res
+        }catch(err){
+          return err.response
+        }
       },
-      updateTotal(){
-        this.$root.$emit('getTotalEntriesProf')
-      },
-       updateData(){
+      updateData(){
         this.$root.$emit('fetchDataProf')
       },
       checkFormValidity() {
@@ -123,6 +126,7 @@ import axios from 'axios'
         return valid
       },    
       resetModal() {
+        this.modelChange = false
         this.name = ''
         this.prenom = ''
         this.username = ''
@@ -135,6 +139,9 @@ import axios from 'axios'
         this.errorMessage = null
         this.error = false
       },
+      detectchange(){
+        this.modelChange = true
+      },
       handleOk(bvModalEvt) {
         // Prevent modal from closing
         bvModalEvt.preventDefault()
@@ -146,28 +153,28 @@ import axios from 'axios'
         if (!this.checkFormValidity()) {
           return
         }
-        // Push the name to submitted names
-        this.prof.lastName = this.name
-        this.prof.firstName = this.prenom
-        this.prof.username = this.username
-        this.prof.password = this.password
-        //this.checkRequestError()
-        this.error = false
-        const res = await this.addprof()
-        if(res.status !== 200){
-          this.error = true
-          this.errorMessage = res.data.detail
-          return 
+        if(this.modelChange){
+          this.prof.lastName = this.name
+          this.prof.firstName = this.prenom
+          this.prof.username = this.username
+          this.prof.password = this.password
+          //this.checkRequestError()
+          this.error = false
+          const res = await this.updateProf(this.profId)
+          if(res.status !== 200){
+            this.error = true
+            this.errorMessage = res.data.detail
+            return 
+          }
         }
         // Hide the modal 
          this.$nextTick(() => {
                         this.$bvModal.hide('modal-prevent-closing')
                       })
-        //call getTotal methode from parent componet to update total
-        this.updateTotal()
+        //Send data to Crud_Prof
+        //this.$emit('add-prof',res.data)
         this.updateData()
       }
     },
-    
   }
 </script>
