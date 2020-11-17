@@ -2,13 +2,12 @@
   <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      title="!!!! Delete Title Bar !!!!" 
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
-        <b-form-group :state="titleState" label="Matiere" label-for="matiere-input"
+        <b-form-group :state="titleState" label="Matiere*" label-for="matiere-input"
           invalid-feedback="Matiere is required">
           <b-form-input id="matiere-input" v-model="title" :state="titleState" ref="title" required>
           </b-form-input>
@@ -20,7 +19,7 @@
         </b-form-group>
         
         <b-form-group 
-          :state="profState" label="Prof" label-for="prof-input" invalid-feedback="Prof is required"
+          :state="profState" label="Prof*" label-for="prof-input" invalid-feedback="Prof is required"
         >
           <b-form-input 
               id="prof-input" v-model="profId" :state="profState" ref="prof" list="prof-list" required>

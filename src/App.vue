@@ -10,7 +10,27 @@ export default {
   name:"App",
   components:{
     Header
-  }
+  },
+  navLinks : [
+        {
+          path: '/',
+          text: 'Home',
+          icon: 'ion-home'
+        },
+        {
+          path: '/filier',
+          text: 'Filier',
+          icon: 'ion-university'
+        }, {
+          path: '/profs',
+          text: 'Profs',
+          icon : 'ion-person-stalker'
+        }, {
+          path: '/create_emploi',
+          text: 'CrudEmploi',
+          icon: 'ion-calendar'
+        }
+      ]
 }
 </script>
 <style>
