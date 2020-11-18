@@ -1,17 +1,23 @@
 <template>
   <div id="app" class="bg-white">
-      <Header />
+      <!-- <Header />  -->
+      <NavBar :nav-links="navLinks"  
+               :image-path="require('./assets/logo.png')"                   
+      />
     <router-view/>
   </div>
 </template>
 <script>
-import Header from './components/layout/Header'
+import NavBar from './components/layout/ResponsiveNavBar.vue'
+// import Header from './components/layout/Header.vue'
 export default {
   name:"App",
   components:{
-    Header
+    NavBar,
+    // Header
   },
-  navLinks : [
+  data : () => ({
+      navLinks : [
         {
           path: '/',
           text: 'Home',
@@ -31,6 +37,7 @@ export default {
           icon: 'ion-calendar'
         }
       ]
+  })
 }
 </script>
 <style>

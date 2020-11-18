@@ -1,25 +1,26 @@
 <template>
-    <nav :style="{background : background || '#333'}">
-        <ul :style="{background : background || '#333'}" ref="nav">
-           <figure class="image-logo" @click="toggleNav">
+	<nav>
+		<ul :style="{background : background || '#4e73df'}" ref="nav">
+			<figure class="image-logo" @click="toggleNav">
 				<img :src="imagePath" height="40px" width="40px" />
 			</figure>
-            <li
-				v-for="(link, index) in navLinks"
-				:key="index"
-				@mouseenter="$event.currentTarget.style.background = hoverBackground || '#999'"
-				@mouseleave="$event.currentTarget.style.background = background || '#333'"
-			>
-				<router-link
-					:to="link.path"
-					:style="{ color: linkColor || '#DDD' }"
-				>
+			<li v-for="(link, index) in navLinks" :key="index">
+				<!-- @mouseenter="$event.currentTarget.style.background = hoverBackground || '#007bff'"
+				@mouseleave="$event.currentTarget.style.background = background || '#4e73df'"
+			 -->
+				<router-link :to="link.path" :style="{ color: linkColor || '#f8f9fa' }">
 					{{ link.text }}
 					<i :class="link.icon" />
 				</router-link>
 			</li>
-        </ul>
-    </nav>
+		</ul>
+		<!-- 
+			ight : #f8f9fa
+			dark : #343a40 
+			primary : #007bff
+
+		-->
+	</nav>
 </template>
 
 <script>
@@ -36,9 +37,9 @@ export default {
 
 <style scoped lang="scss">
 nav {
-	height: 60px;
-	width: 100%;
-	box-shadow: 2px 2px 2px #CCC;
+	// height: 60px;
+	// width: 100%;
+	// box-shadow: 2px 2px 2px #CCC;
 	ul {
 		display: flex;
 		height: 100%;
@@ -49,7 +50,7 @@ nav {
 		box-shadow: 2px 2px 2px #CCC;
 		figure {
 			cursor: pointer;
-			margin-right: 10px;
+			// margin-right: 10px;
 		}
 		a {
 			text-decoration: none;
@@ -60,43 +61,55 @@ nav {
 		i {
 			margin-right: 10px;
 			font-size: 22px;
+			font-weight: normal;
 		}
 		li {
 			list-style-type: none;
 			padding: 10px 20px;
+			font-size: 1em;
+			opacity: 0.8;
+		}
+		li:hover{
+			opacity: 1;
+			font-size: 1.2em;
+			i {
+			margin-right: 15px;
+			font-size: 30px;
+			font-weight: normal;
+		}
 		}
 	}
 }
-@media screen and (max-width: 759px) {
-	nav {
-		ul {
-			position: absolute;
-			width: 300px;
-			flex-direction: column;
-			left: -240px;
-			transition: 300ms ease all;
-			top: 60px;
-			&.active {
-				left: 0px;
-			}
-			figure {
-				position: fixed;
-				z-index: 1;
-				top: 10px;
-				left: 2px;
-			}
-			li {
-				width: 100%;
-				padding-left: 0;
-				padding-right: 0;
-			}
-			a {
-				flex-direction: row;
-				margin-left: 20px;
-				justify-content: space-between;
-				margin-right: 13px;
-			}
+nav {   
+	ul {
+		position: absolute;
+		width: 300px;
+		flex-direction: column;
+		left: -240px;
+		padding-top: 40px;
+		transition: 300ms ease all;
+		// top: 60px;
+		&.active {   
+			left: 0px;    
+		}
+		figure {
+			position: fixed;
+			z-index: 1;
+			top: 10px;
+			left: 10px;
+		}
+		li {
+			width: 100%;
+			padding-left: 0;
+			padding-right: 0;
+		}
+		a {
+			flex-direction: row;
+			margin-left: 20px;
+			justify-content: space-between;
+			margin-right: 13px;
 		}
 	}
 }
+
 </style>

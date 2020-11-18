@@ -40,7 +40,7 @@ const routes = [
     component : CrudEmploi
   },
   // otherwise redirect to home
-  { path: '*', redirect: '/' }
+  // { path: '*', redirect: '/' }
 ]
 
 const router = new VueRouter({

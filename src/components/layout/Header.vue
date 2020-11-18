@@ -20,5 +20,6 @@ export default {
 <style scoped>
 nav{
     max-height:45px;
+    margin-left: 40px;
 }
 </style>
