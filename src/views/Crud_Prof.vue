@@ -182,9 +182,9 @@ export default {
     font-family: 'Varela Round', sans-serif;
     font-size: 13px;
 } */
-.table-responsive {
+/* .table-responsive {
     margin: 10px;
-}
+} */
 .table-wrapper {
     min-width: 1000px;
     background: #fff;
