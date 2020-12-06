@@ -5,6 +5,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from './router'
 import VueFlexboxgrid from 'vue-flexboxgrid'
+import myPlugin from './myauth/index.js'
 
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -18,6 +19,8 @@ Vue.use(IconsPlugin)
 Vue.use(VueAxios, axios)
 
 Vue.use(VueFlexboxgrid)
+
+Vue.use(myPlugin)
 
 
 Vue.config.productionTip = false

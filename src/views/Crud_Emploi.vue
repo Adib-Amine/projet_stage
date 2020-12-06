@@ -80,7 +80,7 @@ export default {
     methods : {
         async fetchData(){
             axios
-            .get("http://localhost:8000/filiers")
+            .get("http://localhost:8000/filiers",this.$myauth.getBearer())
             .then(response => (this.info = response))
         },
         selectedFilier(filier){

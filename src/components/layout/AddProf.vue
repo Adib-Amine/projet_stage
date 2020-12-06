@@ -90,12 +90,20 @@ import axios from 'axios'
         errorMessage : null,
         prof : {},
         error : false,
+        testprof:  {
+          lastName : 'test',
+          firstName : 'test',
+          username : 'test',
+          password : 'test',
+          type : 'prof'
+        }
       }
     },
     methods: {
       async addprof(){
       try{
-        const res = await axios.post("http://localhost:8000/profs", this.prof)
+        const res = await axios.post("http://localhost:8000/profs", this.prof,this.$myauth.getBearer())
+        // const res = await axios.post("http://localhost:8000/profs", this.testprof,this.$myauth.getBearer())
         return res
       }catch(err){
         return err.response
@@ -151,6 +159,7 @@ import axios from 'axios'
         this.prof.firstName = this.prenom
         this.prof.username = this.username
         this.prof.password = this.password
+        this.prof.type = 'prof'
         //this.checkRequestError()
         this.error = false
         const res = await this.addprof()

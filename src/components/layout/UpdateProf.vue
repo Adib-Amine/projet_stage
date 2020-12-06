@@ -104,7 +104,7 @@ import axios from 'axios'
       },
       async updateProf(id){
         try{
-        const res = await axios.post("http://localhost:8000/profs/"+id, this.prof)
+        const res = await axios.post("http://localhost:8000/profs/"+id, this.prof,this.$myauth.getBearer())
           return res
         }catch(err){
           return err.response

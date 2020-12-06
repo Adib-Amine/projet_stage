@@ -1,20 +1,20 @@
 <template>
   <div id="app" class="bg-white">
-      <!-- <Header />  -->
-      <NavBar :nav-links="navLinks"  
+      <Header /> 
+      <!-- <NavBar :nav-links="navLinks"  
                :image-path="require('./assets/logo.png')"                   
-      />
+      /> -->
     <router-view/>
   </div>
 </template>
 <script>
-import NavBar from './components/layout/ResponsiveNavBar.vue'
-// import Header from './components/layout/Header.vue'
+// import NavBar from './components/layout/ResponsiveNavBar.vue'
+import Header from './components/layout/Header.vue'
 export default {
   name:"App",
   components:{
-    NavBar,
-    // Header
+    // NavBar,
+    Header
   },
   data : () => ({
       navLinks : [

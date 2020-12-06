@@ -91,11 +91,11 @@ export default {
     methods:{
         async fetchDataProf(){
             axios
-            .get("http://localhost:8000/profs?skip="+this.skip+"&limit="+this.limit)
+            .get("http://localhost:8000/profs?skip="+this.skip+"&limit="+this.limit,this.$myauth.getBearer())
             .then(response => (this.info = response))
         },
         async fetchProf(id){
-            const res = await  axios.get("http://localhost:8000/profs/"+id)
+            const res = await  axios.get("http://localhost:8000/profs/"+id,this.$myauth.getBearer())
             return res 
         },
         confirmDelet(id){
@@ -127,7 +127,7 @@ export default {
             
         },
         async deleteProf(){
-            await axios.delete('http://localhost:8000/profs/'+this.selectedProf.id)
+            await axios.delete('http://localhost:8000/profs/'+this.selectedProf.id,this.$myauth.getBearer())
             await this.fetchDataProf();
             this.getTotalEntriesProf()
             this.resetModal
@@ -175,7 +175,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 /* .main {
     color: #566787;
     background: #f5f5f5;

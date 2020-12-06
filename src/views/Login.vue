@@ -7,17 +7,20 @@
                         Login successfully. <small>waiting for redirect.</small>
                         <loader-component width="30"></loader-component>
                     </div>
+                    <div class="alert alert-primary" role="alert" :style="{opacity: error ? 1 : 0}">
+                        {{errorMessage}}.
+                    </div>
                     <h1 class="display-3 font-weight-bold">Login</h1>
                     <p class="font-weight-bold">Welcome back</p>
                     <br>
                     <form action="">
                         <div class="form-group">
-                            <lable class="input-label">Email</lable>
-                            <input type="email" class="form-control" placeholder="Email">
+                            <label class="input-label">Username</label>
+                            <input type="text" class="form-control" v-model="requestBody.username" placeholder="Username">
                         </div>
                         <div class="form-group">
-                            <lable class="input-label">Password</lable>
-                            <input type="password" class="form-control" placeholder="Password">
+                            <label class="input-label">Password</label>
+                            <input type="password" class="form-control" v-model="requestBody.password" placeholder="Password">
                         </div>
                         <br>
                         <div class="form-group d-flex justify-content-center">
@@ -28,33 +31,70 @@
                 </div>
             </div>
         </div>
+        <div v-show="error">
+          {{errorMessage}}
+        </div>
     </section>
 </template>
 
 <script>
 import LoaderComponent from '../components/LoadingComponent'
-import { setTimeout } from 'timers';
+import { setTimeout } from 'timers'
+import jwt_decode from "jwt-decode"
+import axios from 'axios'
+import qs from 'qs'
 
 export default {
     components: { LoaderComponent },
     data() {
         return {
             isLoggingIn: false,
-            isAlertShow: false
+            isAlertShow: false,
+            error : false,
+            errorMessage : null,
+            requestBody : {
+                username : null,
+                password : null
+            }
         }
     },
     methods: {
-        login() {
-            this.isLoggingIn = true
-            setTimeout(() => {
-                this.isLoggingIn = false
-                this.isAlertShow = true
-                setTimeout(() => this.redirect(), 1000)
-            }, 1000)
+        async login() {
+            const res = await this.gettoken()
+            if(res.status == 200){
+                this.$myauth.access_token = res.data.access_token
+                this.$myauth.user_type = jwt_decode(this.$myauth.access_token).type
+                this.isLoggingIn = true
+                setTimeout(() => {
+                    this.$myauth.isAuthenticated = true
+                    this.isLoggingIn = false
+                    this.isAlertShow = true
+                    setTimeout(() => this.redirect(), 1000)
+                }, 1000)   
+            }
+            else{
+                this.error = true
+                setTimeout(() => this.showError(),2000)
+                this.errorMessage = res.data.detail
+            }
+            
         },
-
         redirect() {
-            this.$router.push({name: 'Student'})
+            if(this.$myauth.user_type == 'admin')
+                this.$router.push({name: 'Admin'})
+            else
+                this.$router.push({name: 'About'})
+        },
+        showError(){
+            this.error = false
+        },
+        async gettoken(){
+            try {
+                const res = await axios.post("http://localhost:8000/token",qs.stringify(this.requestBody),this.$myauth.config)
+                return res
+            } catch (err) {
+                return err.response
+            }
         }
     }
 }

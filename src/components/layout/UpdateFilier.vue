@@ -72,7 +72,7 @@ import axios from 'axios'
       },
       async updateFilier(id){
         try{
-        const res = await axios.post("http://localhost:8000/filiers/"+id, this.filier)
+        const res = await axios.post("http://localhost:8000/filiers/"+id, this.filier,this.$myauth.getBearer())
           return res
         }catch(err){
           return err.response

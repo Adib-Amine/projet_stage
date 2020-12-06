@@ -67,8 +67,8 @@ import axios from 'axios'
     },
     methods: {
       async fetchDataProf(){
-            const total  = await axios.get("http://localhost:8000/profs/prof/count")
-            const profs = await axios.get("http://localhost:8000/profs?limit="+total.data)
+            const total  = await axios.get("http://localhost:8000/profs/prof/count",this.$myauth.getBearer())
+            const profs = await axios.get("http://localhost:8000/profs?limit="+total.data,this.$myauth.getBearer())
             if(profs.status === 200){
               profs.data.forEach(prof => {
                 this.profList.push(prof.username)
