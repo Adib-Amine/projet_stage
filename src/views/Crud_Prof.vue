@@ -22,7 +22,7 @@
                         <th>Nom</th>						
                         <th>Prenom</th>
                         <th>Username</th>
-                        <th>Password</th>
+                        <!-- <th>Password</th> -->
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -32,7 +32,7 @@
                         <td>{{prof.lastName}}</td>
                         <td>{{prof.firstName}}</td>
                         <td>{{prof.username}}</td>
-                        <td>{{prof.password}}</td>                    
+                        <!-- <td>{{prof.password}}</td>                     -->
                         <td>
                             <a v-on:click="showModelUpdate(prof.id)" class="settings" ><i class="material-icons">&#xE8B8;</i></a>
                             <!-- <a v-on:click="deleteProf(prof.id)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a> -->

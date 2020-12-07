@@ -24,31 +24,71 @@ export default {
     },
     data (){
         return {
-            navLinks : [
-        {
-          path: '/admin',
-          text: 'Home',
-          icon: 'ion-home'
-        },
-        {
-          path: '/filier',
-          text: 'Filier',
-          icon: 'ion-university'
-        }, {
-          path: '/profs',
-          text: 'Profs',
-          icon : 'ion-person-stalker'
-        }, {
-          path: '/create_emploi',
-          text: 'CrudEmploi',
-          icon: 'ion-calendar'
-        }
-      ]
+            navLinks: [{
+                path: '/admin',
+                text: 'Home',
+                icon: 'ion-home'
+              },
+              {
+                path: '/filier',
+                text: 'Filier',
+                icon: 'ion-university'
+              }, {
+                path: '/profs',
+                text: 'Profs',
+                icon: 'ion-person-stalker'
+              }, {
+                path: '/create_emploi',
+                text: 'CrudEmploi',
+                icon: 'ion-calendar'
+              }
+            ],
+            items: [{
+                message: "Accueil",
+                href: "/",
+                icon: "fa fa-user"
+              },
+              {
+                message: "CRUD profs",
+                href: "/about",
+                icon: "fa fa-user"
+              },
+              {
+                message: "CRUD classes",
+                href: "#hala3",
+                icon: "fa fa-user"
+              },
+              {
+                message: "CRUD étudiants",
+                href: "#hala4",
+                icon: "fa fa-user"
+              },
+              {
+                message: "CRUD vacances",
+                href: "#hala5",
+                icon: "fa fa-user"
+              },
+              {
+                message: "Calendrier",
+                href: "/emploi",
+                icon: "fa fa-user"
+              }
+            ]
         }
     }
 }
 </script>
 
-<style>
-
-</style>
+// const linksStore = {
+//   data: {
+//     items: [
+//       { message: "Accueil", href: "/" ,icon:"fa fa-user"},
+//       { message: "CRUD profs", href: "/about",icon:"fa fa-user" },
+//       { message: "CRUD classes", href: "#hala3",icon:"fa fa-user" },
+//       { message: "CRUD étudiants", href: "#hala4",icon:"fa fa-user" },
+//       { message: "CRUD vacances", href: "#hala5",icon:"fa fa-user" },
+//       { message: "Calendrier", href: "/emploi",icon:"fa fa-user" }
+//     ]
+//   }
+// };
+// export default linksStore;

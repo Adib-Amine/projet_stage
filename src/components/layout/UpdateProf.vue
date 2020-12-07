@@ -18,6 +18,7 @@
             v-model="name"
             :state="nameState"
             ref="name"
+            v-on:change="detectchange"
             required>
           </b-form-input>
         </b-form-group>
@@ -32,6 +33,7 @@
             v-model="prenom"
             ref="prenom"
             :state="prenomState"
+            v-on:change="detectchange"
             required>
           </b-form-input>
         </b-form-group>
@@ -46,21 +48,22 @@
             v-model="username"
             ref="username"
             :state="usernameState"
+            v-on:change="detectchange"
             required>
           </b-form-input>
         </b-form-group>
 
         <b-form-group
-          :state="passwordState"
-          label="Password: "
+          label="Add new password: "
           label-for="Password-input"  
-          invalid-feedback="Password is required">
+          >
           <b-form-input
             id="Password-input"
             v-model="password"
             ref="password"
-            :state="passwordState"
-            required>
+            v-on:change="detectchange"
+            
+            >
           </b-form-input>
         </b-form-group>
 
@@ -85,7 +88,7 @@ import axios from 'axios'
         username: '',
         usernameState : null,
         password: '',
-        passwordState : null,
+        // passwordState : null,
         profId : null,
         errorMessage : null,
         prof : {},
@@ -116,13 +119,13 @@ import axios from 'axios'
       checkFormValidity() {
         const validName = this.$refs.name.checkValidity()
         const validPrenom = this.$refs.prenom.checkValidity()
-        const validUsername = this.$refs.prenom.checkValidity()
-        const validPassword = this.$refs.prenom.checkValidity()
+        const validUsername = this.$refs.username.checkValidity()
+        // const validPassword = this.$refs.password.checkValidity()
         this.nameState = validName
         this.prenomState = validPrenom
         this.usernameState = validUsername
-        this.passwordState = validPassword
-        const valid = validName && validPrenom && validUsername && validPassword
+        // this.passwordState = validPassword
+        const valid = validName && validPrenom && validUsername
         return valid
       },    
       resetModal() {
@@ -130,12 +133,12 @@ import axios from 'axios'
         this.name = ''
         this.prenom = ''
         this.username = ''
-        this.password = ''
+        this.password = ""
         this.prof = {}
         this.nameState = null
         this.prenomState = null
         this.usernameState = null
-        this.passwordState = null
+        // this.passwordState = null
         this.errorMessage = null
         this.error = false
       },
@@ -157,7 +160,10 @@ import axios from 'axios'
           this.prof.lastName = this.name
           this.prof.firstName = this.prenom
           this.prof.username = this.username
-          this.prof.password = this.password
+          this.prof.password = this.password == null ? "" : this.password
+          this.prof.type = 'prof'
+          this.prof.id = this.profId
+          console.log(this.prof)
           //this.checkRequestError()
           this.error = false
           const res = await this.updateProf(this.profId)
