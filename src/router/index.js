@@ -6,6 +6,7 @@ import Admin from '../views/Admin.vue'
 import CrudFilier from '../views/Crud_Filier.vue'
 import CrudEmploi from '../views/Crud_Emploi.vue'
 import CrudProf from '../views/Crud_Prof.vue'
+// import { requireAuth } from '../myauth/index.js'
 
 Vue.use(VueRouter)
 
@@ -18,17 +19,20 @@ const routes = [
       {
         path: '/filier',
         name : 'Filier',
-        component : CrudFilier
+        component : CrudFilier,
+        // beforeEnter:  requireAuth
       },
       {
         path: '/profs',
         name : 'Profs',
-        component : CrudProf
+        component : CrudProf,
+        // beforeEnter:  requireAuth
       },
       {
         path : '/create_emploi',
         name : 'CrudEmploi',
-        component : CrudEmploi
+        component : CrudEmploi,
+        // beforeEnter:  requireAuth
       },
     ]
   },

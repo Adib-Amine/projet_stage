@@ -125,7 +125,7 @@ export default {
             
         },
         async deleteFilier(){
-            await axios.delete('http://localhost:8000/filiers/'+this.selectedFilier.id)
+            await axios.delete('http://localhost:8000/filiers/'+this.selectedFilier.id,this.$myauth.getBearer())
                 //.then(this.fetchData());
             await this.fetchData();
             this.getTotalEntries()

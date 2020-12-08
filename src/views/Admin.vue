@@ -1,8 +1,8 @@
 <template>
         <div class="container">
-            <Navbar :nav-links="navLinks"  
+            <!-- <Navbar :nav-links="navLinks"  
                :image-path="require('../assets/logo.png')"                   
-            />
+            /> -->
             <!-- <div class="row justify-content-center">
                 <h1>Admin</h1>
             </div>
@@ -12,15 +12,22 @@
             <div class="row">
                 <p>{{$myauth.access_token}}</p>
             </div> -->
-            <router-view/>
+            <!-- <div class="mt-5"></div> -->
+            <Sidebar />
+            <!-- <div class="mt-5"></div> -->
+            <div class="mt-5 router">
+              <router-view/>
+            </div>
         </div>
 </template>
 
 <script>
-import Navbar from '../components/layout/ResponsiveNavBar'
+// import Navbar from '../components/layout/ResponsiveNavBar'
+import Sidebar from '../components/Sidebar.vue'
 export default {
     components: {
-        Navbar
+        // Navbar,
+        Sidebar
     },
     data (){
         return {
@@ -78,17 +85,8 @@ export default {
     }
 }
 </script>
-
-// const linksStore = {
-//   data: {
-//     items: [
-//       { message: "Accueil", href: "/" ,icon:"fa fa-user"},
-//       { message: "CRUD profs", href: "/about",icon:"fa fa-user" },
-//       { message: "CRUD classes", href: "#hala3",icon:"fa fa-user" },
-//       { message: "CRUD étudiants", href: "#hala4",icon:"fa fa-user" },
-//       { message: "CRUD vacances", href: "#hala5",icon:"fa fa-user" },
-//       { message: "Calendrier", href: "/emploi",icon:"fa fa-user" }
-//     ]
-//   }
-// };
-// export default linksStore;
+<style scoped>
+  /* .router{
+    margin-top: 200px;
+  } */
+</style>

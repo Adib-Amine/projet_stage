@@ -1,4 +1,4 @@
-
+import router from '../router'
 
 const MyPlugin = {
     install(Vue) {
@@ -17,7 +17,8 @@ const MyPlugin = {
         methods : {
           getBearer(){
             return {  headers: {'Authorization': `Bearer ${this.access_token}`}}
-          }
+          },
+         
         }
       })
       // Vue.prototype.$myVar = () => {
@@ -29,7 +30,19 @@ const MyPlugin = {
 };
 
 export default MyPlugin;
-
+export function requireAuth() {
+  if (!MyPlugin.isAuthenticated) {
+    router.push({
+      name: 'Login'
+    })
+  } else {
+    if (MyPlugin.user_type != 'admin') {
+      router.push({
+        name: 'About'
+      })
+    }
+  }
+}
 
 // Vue.prototype.$amineadib = 'amine'
 //       Vue.prototype.$adib = true   
