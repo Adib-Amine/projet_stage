@@ -87,6 +87,7 @@ export default {
     },
     data:() => ({
     //     Sidebar active: 'home',
+         active: 'home',
     //   activeSidebar: false
     }),
      methods : {

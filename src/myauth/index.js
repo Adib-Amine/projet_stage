@@ -1,4 +1,5 @@
 import router from '../router'
+import jwt_decode from "jwt-decode"
 
 const MyPlugin = {
     install(Vue) {
@@ -8,6 +9,7 @@ const MyPlugin = {
             access_token : null,
             token_type : 'bearer',
             user_type : '',
+            name : '',
             config : {
               headers: {
                   'content-type': 'application/x-www-form-urlencoded'
@@ -18,12 +20,30 @@ const MyPlugin = {
           getBearer(){
             return {  headers: {'Authorization': `Bearer ${this.access_token}`}}
           },
-         
+          checkExpiration(){
+              let d = new Date(0)
+              d.setUTCSeconds(jwt_decode(this.$myauth.access_token).exp);
+              let n = new Date()
+              if( (n.getTime() - d.getTime()) / (1000) < 3600){
+                
+              }
+            }
+        },
+        mounted() {
+          if(localStorage.access_token) 
+            this.access_token = localStorage.access_token;
+        },
+        watch:{
+          access_token(newAccess_token) {
+            localStorage.access_token = newAccess_token;
+          },
+          isAuthenticated(){
+            if(localStorage.access_token)
+              return true
+            return false
+          }
         }
       })
-      // Vue.prototype.$myVar = () => {
-      //   return testvar
-      // }
       Vue.prototype.$myauth = userOAuth
       
   }

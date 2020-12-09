@@ -8,7 +8,9 @@
         <template #icon>
           <i class='bx bx-home'></i>
         </template>
+        <router-link to="/admin">
         Home
+        </router-link>
       </vs-sidebar-item>
       <!-- <vs-sidebar-item id="Filier">
         <template #icon>
@@ -76,7 +78,7 @@
 </script>
 <style scoped>
     .sidebarx{
-          position: fix;
+          position: fixed;
           margin-top: 44px;
     }
   </style>
