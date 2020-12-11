@@ -83,7 +83,7 @@ export default {
             if(this.$myauth.user_type == 'admin')
                 this.$router.push({name: 'Admin'})
             else
-                this.$router.push({name: 'About'})
+                this.$router.push({name: 'Mira'})
         },
         showError(){
             this.error = false

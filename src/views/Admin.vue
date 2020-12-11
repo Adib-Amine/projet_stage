@@ -1,12 +1,16 @@
 <template>
         <div class="container">
             <Sidebar />
-            <div class="row justify-content-center mt-5">
+            <!-- <div class="row justify-content-center mt-5">
                 <h6>Your Token : </h6><br>
             </div>
             <div class="row">
                 <p>{{$myauth.access_token}}</p>
-            </div> 
+            </div> -->
+            <!-- <div class="row">
+                <p v-if="localStorage.access_token" class="col-md-8">true : {{localStorage.access_token}}</p>
+                <p v-if="!localStorage.access_token" class="col-md-8">false : {{localStorage.access_token}}</p>
+            </div>  -->
             <div class="mt-5"></div>
             <br>
               <router-view/>
@@ -77,11 +81,11 @@ export default {
             // ]
         }
     },
-    mounted(){
-        let d = new Date(0)
-        d.setUTCSeconds(jwt_decode(this.$myauth.access_token).exp);
-        console.log(d);
-    }
+    // mounted(){
+    //     let d = new Date(0)
+    //     d.setUTCSeconds(jwt_decode(this.$myauth.access_token).exp);
+    //     console.log(d);
+    // }
 }
 </script>
 <style scoped>
