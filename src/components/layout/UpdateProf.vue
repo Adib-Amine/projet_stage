@@ -2,7 +2,7 @@
     <b-modal
       id="modal-prevent-closing"
       ref="modalUpdateProf"
-      title="Ajouter nouveau prof" 
+      title="Edit prof" 
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
@@ -53,6 +53,22 @@
           </b-form-input>
         </b-form-group>
 
+         <b-form-group
+          :state="departementState"  
+          label="Departement:" 
+          label-for="Departement-input"
+          invalid-feedback="Departement is required">
+          <b-form-select
+              id="Departement-input" 
+              v-model="departementId" 
+              ref="departement"
+              :state="departementState"
+              v-on:change="detectchange"
+              required 
+              :options="departementList">
+          </b-form-select>
+         </b-form-group>
+
         <b-form-group
           label="Add new password: "
           label-for="Password-input"  
@@ -89,32 +105,42 @@ import axios from 'axios'
         usernameState : null,
         password: '',
         // passwordState : null,
+        departementId : null,
+        departementState : null,
+        departementList :[],
         profId : null,
         errorMessage : null,
         prof : {},
         error : false,
-        modelChange : false
+        modelChange : false,
       }
     },
     methods: {
-      show(reqProf){
+      show(reqProf,departementList){
           this.$refs.modalUpdateProf.show()
+          this.departementList = departementList
           this.name = reqProf.lastName
           this.prenom = reqProf.firstName
           this.username = reqProf.username
           this.password = reqProf.password
+          this.departementId = reqProf.departementId
           this.profId = reqProf.id 
       },
-      async updateProf(id){
+      async updateProf(){
         try{
-        const res = await axios.post("http://localhost:8000/profs/"+id, this.prof,this.$myauth.getBearer())
+        // const res = await axios.post("http://localhost:8000/profs/"+id, this.prof,this.$myauth.getBearer())
+          
+          const res = await axios.post("http://localhost:8000/profs/user/me", this.prof,this.$myauth.getBearer())
           return res
         }catch(err){
           return err.response
         }
       },
       updateData(){
-        this.$root.$emit('fetchDataProf')
+        if(this.$myauth.user_type == 'admin')
+          this.$root.$emit('fetchDataProfs')
+        else
+          this.$root.$emit('fetchDataProf')
       },
       checkFormValidity() {
         const validName = this.$refs.name.checkValidity()
@@ -134,10 +160,12 @@ import axios from 'axios'
         this.prenom = ''
         this.username = ''
         this.password = ""
+        this.departementId = null
         this.prof = {}
         this.nameState = null
         this.prenomState = null
         this.usernameState = null
+        this.departementState = null
         // this.passwordState = null
         this.errorMessage = null
         this.error = false
@@ -162,11 +190,12 @@ import axios from 'axios'
           this.prof.username = this.username
           this.prof.password = this.password == null ? "" : this.password
           this.prof.type = 'prof'
+          this.prof.departementId = this.departementId
           this.prof.id = this.profId
-          console.log(this.prof)
+          // console.log(this.prof)
           //this.checkRequestError()
           this.error = false
-          const res = await this.updateProf(this.profId)
+          const res = await this.updateProf()
           if(res.status !== 200){
             this.error = true
             this.errorMessage = res.data.detail

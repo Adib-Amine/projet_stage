@@ -51,6 +51,20 @@
         </b-form-group>
 
         <b-form-group
+          :state="departementState"  
+          label="Departement:" 
+          label-for="Departement-input"
+          invalid-feedback="Departement is required">
+          <b-form-select
+              id="Departement-input" 
+              v-model="departementId" 
+              :state="departementState"
+              required 
+              :options="departementList">
+          </b-form-select>
+         </b-form-group>
+
+        <b-form-group
           :state="passwordState"
           label="Password: "
           label-for="Password-input"  
@@ -87,15 +101,19 @@ import axios from 'axios'
         usernameState : null,
         password: '',
         passwordState : null,
+        departementId : null,
+        departementState : null,
         errorMessage : null,
         prof : {},
+        departementList :[],
         error : false,
         testprof:  {
           lastName : 'test',
           firstName : 'test',
           username : 'test',
           password : 'test',
-          type : 'prof'
+          type : 'prof',
+          departementId : 1
         }
       }
     },
@@ -109,14 +127,15 @@ import axios from 'axios'
         return err.response
       }
       },
-      showProf(){
-          this.$refs.modal.show()
+      showProf(departementList){
+        this.departementList = departementList
+        this.$refs.modal.show()
       },
       updateTotal(){
         this.$root.$emit('getTotalEntriesProf')
       },
        updateData(){
-        this.$root.$emit('fetchDataProf')
+        this.$root.$emit('fetchDataProfs')
       },
       checkFormValidity() {
         const validName = this.$refs.name.checkValidity()
@@ -135,6 +154,7 @@ import axios from 'axios'
         this.prenom = ''
         this.username = ''
         this.password = ''
+        this.departementId = null
         this.prof = {}
         this.nameState = null
         this.prenomState = null
@@ -159,6 +179,7 @@ import axios from 'axios'
         this.prof.firstName = this.prenom
         this.prof.username = this.username
         this.prof.password = this.password
+        this.prof.departementId = this.departementId
         this.prof.type = 'prof'
         //this.checkRequestError()
         this.error = false

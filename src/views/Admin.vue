@@ -20,7 +20,7 @@
 <script>
 // import Navbar from '../components/layout/ResponsiveNavBar'
 import Sidebar from '../components/Sidebar.vue'
-import jwt_decode from "jwt-decode"
+// import jwt_decode from "jwt-decode"
 export default {
     components: {
         // Navbar,
@@ -28,7 +28,7 @@ export default {
     },
     data (){
         return {
-            token_exp : jwt_decode(this.$myauth.access_token).exp
+            // token_exp : jwt_decode(this.$myauth.access_token).exp
             // navLinks: [{
             //     path: '/admin',
             //     text: 'Home',
@@ -88,11 +88,6 @@ export default {
     // }
 }
 </script>
-<style scoped>
-  /* .router{
-    margin-top: 200px;
-  } */
-</style>
 
  <!-- <Navbar :nav-links="navLinks"  
                :image-path="require('../assets/logo.png')"                   

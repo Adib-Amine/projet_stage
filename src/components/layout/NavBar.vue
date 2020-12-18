@@ -21,61 +21,9 @@
             <template #right>
                 <vs-button flat v-if="!$myauth.isAuthenticated"><router-link to="/login">Login</router-link></vs-button>
                 <vs-button  @click='logout' v-if="$myauth.isAuthenticated">Sign Out</vs-button>
-                <!-- <vs-button >Login</vs-button> -->
             </template>
         </vs-navbar>
-
         <!-- <sidebar v-if="$myauth.isAuthenticated && $myauth.user_type === 'admin'" /> -->
-
-        <!-- <vs-sidebar
-        class="sidebarx"
-        absolute
-        hover-expand
-        reduce
-        v-model="active"
-        :open.sync="activeSidebar"
-        >
-        <template #logo>
-          <img src="../../assets/logo.png" height="40px" width="40px" />
-        </template>
-        <vs-sidebar-item id="home">
-        <template #icon>
-          <i class='bx bx-home'></i>
-        </template>
-        Home
-      </vs-sidebar-item>
-      <vs-sidebar-item id="Filier">
-        <template #icon>
-          <i class='bx bx-grid-alt'></i>
-        </template>
-        Filier
-      </vs-sidebar-item>
-      <vs-sidebar-item id="Filier">
-        <template #icon>
-          <i class='bx bxs-graduation'></i>
-        </template>
-        Filier
-      </vs-sidebar-item>
-      <vs-sidebar-item id="Prof">
-        <template #icon>
-          <i class='bx bx-group'></i>
-        </template>
-        Profs
-      </vs-sidebar-item>
-      <vs-sidebar-item id="Prof">
-        <template #icon>
-          <i class='bx bx-id-card'></i>
-        </template>
-        Profs
-      </vs-sidebar-item>
-      <vs-sidebar-item id="CrudEmploi">
-        <template #icon>
-          <i class='bx bx-calendar-plus'></i>
-        </template>
-        CrudEmploi
-      </vs-sidebar-item>
-      </vs-sidebar> -->
-    
     </div>
 </template>
 <script>
@@ -86,7 +34,6 @@ export default {
         // Sidebar
     },
     data:() => ({
-    //     Sidebar active: 'home',
          active: 'home',
     //   activeSidebar: false
     }),

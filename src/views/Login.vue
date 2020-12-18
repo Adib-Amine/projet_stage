@@ -40,7 +40,6 @@
 <script>
 import LoaderComponent from '../components/LoadingComponent'
 import { setTimeout } from 'timers'
-import jwt_decode from "jwt-decode"
 import axios from 'axios'
 import qs from 'qs'
 
@@ -62,11 +61,9 @@ export default {
         async login() {
             const res = await this.gettoken()
             if(res.status == 200){
-                this.$myauth.access_token = res.data.access_token
-                this.$myauth.user_type = jwt_decode(this.$myauth.access_token).type
                 this.isLoggingIn = true
                 setTimeout(() => {
-                    this.$myauth.isAuthenticated = true
+                    this.$myauth.setToken(res.data.access_token)
                     this.isLoggingIn = false
                     this.isAlertShow = true
                     setTimeout(() => this.redirect(), 1000)
@@ -83,7 +80,7 @@ export default {
             if(this.$myauth.user_type == 'admin')
                 this.$router.push({name: 'Admin'})
             else
-                this.$router.push({name: 'Mira'})
+                this.$router.push({name: 'ProfPanel'})
         },
         showError(){
             this.error = false

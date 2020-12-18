@@ -6,11 +6,11 @@
             <div class="table-title bg-primary">
                 <div class="row">
                     <div class="col-sm-5">
-                        <h2><b>Profs</b></h2>
+                        <h2><b>Departements</b></h2>
                     </div>
                     <div class="col-sm-7">
-                        <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Prof<AddProf ref="addProfModel" /></span></a>
-                        <!-- @add-prof="updateTab" -->
+                        <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Departement<AddDepartement ref="addDepartementModel" /></span></a>
+                        <!-- @add-departement="updateTab" -->
                         <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						
                     </div>
                 </div>
@@ -19,36 +19,31 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Nom</th>						
-                        <th>Prenom</th>
-                        <th>Username</th>
-                        <th>Departement</th>
+                        <th>Label</th>						
+                        <th>Titre</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="prof in this.info.data" :key="prof.id">
-                        <td>{{prof.id}}</td>
-                        <td>{{prof.lastName}}</td>
-                        <td>{{prof.firstName}}</td>
-                        <td>{{prof.username}}</td>
-                        <td>{{prof.departementId}}</td>
-                        <!-- <td>{{prof.password}}</td>                     -->
+                    <tr v-for="departement in this.info.data" :key="departement.id">
+                        <td>{{departement.id}}</td>
+                        <td>{{departement.label}}</td>
+                        <td>{{departement.title}}</td>                    
                         <td>
-                            <a v-on:click="showModelUpdate(prof.id)" class="settings" ><i class="material-icons">&#xE8B8;</i></a>
-                            <!-- <a v-on:click="deleteProf(prof.id)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a> -->
-                            <a v-on:click="confirmDelet(prof)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
+                            <a v-on:click="showModelUpdate(departement.id)" class="settings" ><i class="material-icons">&#xE8B8;</i></a>
+                            <!-- <a v-on:click="deleteDepartement(departement.id)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a> -->
+                            <a v-on:click="coonfirmDelet(departement)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <b-modal id="bv-modal-delete" hide-footer @hidden="resetModal">
                 <div class="d-block text-center">
-                    <h3>Etes-vous sûr que vous voulez supprimer : {{selectedProf.lastName +" " +selectedProf.firstName}}?</h3>
+                    <h3>Etes-vous sûr que vous voulez supprimer : {{selectedDepartement.label}}?</h3>
                 </div>
-                <b-button class="mt-3" variant="danger" block @click="deleteProf()">Delete</b-button>
+                <b-button class="mt-3" variant="danger" block @click="deleteDepartement()">Delete</b-button>
             </b-modal>
-            <UpdateProf ref="updateProfModel"/>
+            <UpdateDepartement ref="updateModel"/>
             <div class="clearfix">
                 <div class="hint-text">Showing <b>{{currentEntrie}}</b> out of <b>{{calcEntries}}</b> entries</div>
                 <ul class="pagination">
@@ -68,15 +63,15 @@
 
 <script>
 import axios from 'axios'
-import AddProf from '../components/layout/AddProf.vue'
-import UpdateProf from '../components/layout/UpdateProf.vue'
+import AddDepartement from '../components/layout/AddDepartement.vue'
+import UpdateDepartement from '../components/layout/UpdateDepartement.vue'
 
 
 export default {
-    name: 'CrudProf',
+    name: 'CrudDepartement',
     components : {
-        AddProf,
-        UpdateProf
+        AddDepartement,
+        UpdateDepartement
     },
     data(){
         return{
@@ -86,79 +81,74 @@ export default {
             count : 1,
             total: 0,
             currentEntrie : 1,
-            selectedProf : {},
-            departementList : [{ text: 'Select One', value: null }]
+            selectedDepartement : {},
         }
     },
     methods:{
-        async fetchDataProf(){
+        async fetchData(){
             axios
-            .get("http://localhost:8000/profs?skip="+this.skip+"&limit="+this.limit,this.$myauth.getBearer())
+            .get("http://localhost:8000/departements?skip="+this.skip+"&limit="+this.limit)
             .then(response => (this.info = response))
         },
-        async fetchProf(id){
-            const res = await  axios.get("http://localhost:8000/profs/"+id,this.$myauth.getBearer())
+        async fetchDepartement(id){
+            const res = await  axios.get("http://localhost:8000/departements/"+id)
             return res 
         },
-        async fetchDepartement(){
-          const response = await axios.get("http://localhost:8000/departements",this.$myauth.getBearer())
-            for(let index = 0; index < response.data.length; index++) {
-                this.departementList.push({ text:response.data[index].title , value:response.data[index].id })
-            }
-        },
-        confirmDelet(id){
-            this.selectedProf = id
+        coonfirmDelet(id){
+            this.selectedDepartement = id
+            //this.$bvModal.hide('modal-prevent-closing')
+            //$bvModal.show('bv-modal-delete')
             this.$bvModal.show('bv-modal-delete')
         },
         resetModal(){
-            this.selectedProf = {}
+            this.selectedDepartement = {}
         },
         showModel(){
-            this.$refs.addProfModel.showProf(this.departementList)
-            this.getTotalEntriesProf()
+            this.$refs.addDepartementModel.show();
+            this.getTotalEntries()
         },
         async showModelUpdate(id){
-            const res = await this.fetchProf(id)
-            this.$refs.updateProfModel.show(res.data,this.departementList)
+            const res = await this.fetchDepartement(id)
+            this.$refs.updateModel.show(res.data)
         },
         Next(){
             this.skip += 10
             this.count += 1
             this.currentEntrie += 1
-            this.fetchDataProf()
+            this.fetchData()
         },
         Previous(){
             this.skip -= 10
             this.count -= 1
             this.currentEntrie -= 1
-            this.fetchDataProf()
+            this.fetchData()
             
         },
-        async deleteProf(){
-            await axios.delete('http://localhost:8000/profs/'+this.selectedProf.id,this.$myauth.getBearer())
-            await this.fetchDataProf();
-            this.getTotalEntriesProf()
+        async deleteDepartement(){
+            await axios.delete('http://localhost:8000/departements/'+this.selectedDepartement.id,this.$myauth.getBearer())
+                //.then(this.fetchData());
+            await this.fetchData();
+            this.getTotalEntries()
             this.resetModal
             this.$bvModal.hide('bv-modal-delete')
 
         },
-        getTotalEntriesProf(){
+        getTotalEntries(){
             axios
-            .get("http://localhost:8000/profs/prof/count")
+            .get("http://localhost:8000/departements/departement/count")
             .then(response => (this.total = response.data))
         },
         
     },
     mounted () {
-    this.fetchDataProf(),
-    this.getTotalEntriesProf(),
-    this.$root.$on("getTotalEntriesProf",() => {
-        return this.getTotalEntriesProf()
+    this.fetchData(),
+    this.getTotalEntries(),
+    this.$root.$on("getTotalEntries",() => {
+        return this.getTotalEntries()
     }),
-    this.$root.$on("fetchDataProfs",() => {
-        return this.fetchDataProf()
-    }),
-    this.fetchDepartement()
+    this.$root.$on("fetchData",() => {
+        return this.fetchData()
+    })
 
   },
   computed:{
@@ -184,7 +174,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 /* .main {
     color: #566787;
     background: #f5f5f5;

@@ -4,9 +4,11 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Admin from '../views/Admin.vue'
 import CrudFilier from '../views/Crud_Filier.vue'
+import Crud_Departement from '../views/Crud_Departement.vue'
 import CrudEmploi from '../views/Crud_Emploi.vue'
 import CrudProf from '../views/Crud_Prof.vue'
-import Mira from '../views/MiraUpdate.vue'
+import ProfPanel from '../views/Prof_Panel.vue'
+import UpdateProfile from '../views/UpdateProfile.vue'
 import jwt_decode from "jwt-decode"
 
 Vue.use(VueRouter)
@@ -21,6 +23,14 @@ const routes = [
         path: '/filier',
         name : 'Filier',
         component : CrudFilier,
+        meta: {
+          requireAuth: true
+        }
+      },
+      {
+        path: '/departement',
+        name : 'Departement',
+        component : Crud_Departement,
         meta: {
           requireAuth: true
         }
@@ -44,6 +54,22 @@ const routes = [
     ]
   },
   {
+    path : '/prof_panel',
+    name : 'ProfPanel',
+    component : ProfPanel,
+    children: [
+      {
+        path: '/update_profile',
+        name : 'UpdateProfile',
+        component : UpdateProfile,
+        meta : {
+          requireAuth: true
+        }
+      }
+    ]
+
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login
@@ -57,11 +83,6 @@ const routes = [
     path: '/student',
     name: 'Student',
     component: () => import('../views/Emploi.vue')
-  },
-  {
-    path: '/mira',
-    name: 'Mira',
-    component: Mira
   },
   
   // otherwise redirect to home
@@ -83,9 +104,9 @@ router.beforeEach((to, from, next) => {
         if (( dif / 1000) > 3600) {
           next({ path: "/login", query: { redirect: to.fullPath }});
         }else{
-          if(jwt_decode(localStorage.access_token).type != 'admin'){
-            next({ path: "/"});
-          }
+          // if(jwt_decode(localStorage.access_token).type != 'admin'){
+          //   next({ path: "/"});
+          // }
           next()
         }
       }else{
