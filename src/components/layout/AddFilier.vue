@@ -38,6 +38,20 @@
           ></b-form-input>
         </b-form-group>
 
+         <b-form-group
+          :state="departementState"  
+          label="Departement:" 
+          label-for="Departement-input"
+          invalid-feedback="Departement is required">
+          <b-form-select
+              id="Departement-input" 
+              v-model="departementId" 
+              :state="departementState"
+              required 
+              :options="departementList">
+          </b-form-select>
+         </b-form-group>
+
         <div v-show="error">
           {{errorMessage}}
         </div>
@@ -56,6 +70,9 @@ import axios from 'axios'
         labelState: null,
         title: '',
         titleState : null,
+        departementId : null,
+        departementState : null,
+        departementList :[],
         errorMessage : null,
         filier : {},
         error : false,
@@ -71,7 +88,8 @@ import axios from 'axios'
       }
       },
       
-      show(){
+      show(departementList){
+          this.departementList = departementList
           this.$refs.modal.show()
       },
       updateTotal(){
@@ -91,7 +109,9 @@ import axios from 'axios'
       resetModal() {
         this.label = ''
         this.title = ''
+        this.departementId = null
         this.filier = {}
+        this.departementList = []
         this.labelState = null
         this.titleState = null
         this.errorMessage = null
@@ -111,6 +131,8 @@ import axios from 'axios'
         // Push the label to submitted labels
         this.filier.label = this.label
         this.filier.title = this.title
+        this.filier.departementId = this.departementId
+        
         //this.checkRequestError()
         this.error = false
         const res = await this.addfilier()

@@ -18,16 +18,17 @@
           </b-form-input>
         </b-form-group>
         
+
         <b-form-group 
-          :state="profState" label="Prof*" label-for="prof-input" invalid-feedback="Prof is required"
+          :state="profState" label="Prof*" label-for="profinput" invalid-feedback="Prof is required"
         >
           <b-form-input 
-              id="prof-input" v-model="profId" :state="profState" ref="prof" list="prof-list" required>
+              id="profinput" v-model="profId" :state="profState" ref="prof" list="proflist" required>
           </b-form-input>
-          <datalist id="prof-list">
-              <option>Manual Option</option>
+          <b-form-datalist id="proflist" :options="profList"></b-form-datalist>
+          <!-- <datalist id="prof-list">
               <option v-for="variant in profList" :key="variant">{{ variant }}</option>
-          </datalist>
+          </datalist> -->
         </b-form-group>
         
         <b-form-group label="Salle" label-for="salle-input">
@@ -62,6 +63,23 @@ import axios from 'axios'
         endRecur : '2021-01-16',
         salle : null,
         info : null,
+        errorMessage : null,
+        error : false,
+        testtimeslots: {
+          title : "string",
+          descr : "string",
+          numberHour : 0,
+          startTime : "08:30:00",
+          endTime : "10:30:00",
+          daysOfWeek : 0,
+          startRecur : "2020-12-22",
+          endRecur : "2020-12-22",
+          textColor : "string",
+          color : "string",
+          groupId : 0,
+          profId : 4,
+          filierId : 3
+        }
 
       }
     },
@@ -74,6 +92,15 @@ import axios from 'axios'
                 this.profList.push(prof.username)
               })
             }
+      },
+      async addtimeslot(){
+      try{
+        // const res = await axios.post("http://localhost:8000/timeslots", this.timeslot,this.$myauth.getBearer())
+        const res = await axios.post("http://localhost:8000/timeslots", this.testtimeslots,this.$myauth.getBearer())
+        return res
+      }catch(err){
+        return err.response
+      }
       },
       showAddTimeslot(){
           this.$refs.modal.show()
@@ -98,11 +125,19 @@ import axios from 'axios'
         // Trigger submit handler
         this.handleSubmit()
       },
-      handleSubmit() {
+      async handleSubmit() {
         // Exit when the form isn't valid
         if (!this.checkFormValidity()) {
           return
         }
+
+        const res = await this.addtimeslot()
+        if(res.status !== 200){
+          this.error = true
+          this.errorMessage = res.data.detail
+          return 
+        }
+
         // Hide the modal manually
         this.$nextTick(() => {
           this.$bvModal.hide('modal-prevent-closing')

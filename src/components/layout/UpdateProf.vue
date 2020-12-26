@@ -161,6 +161,7 @@ import axios from 'axios'
         this.username = ''
         this.password = ""
         this.departementId = null
+        this.departementList = []
         this.prof = {}
         this.nameState = null
         this.prenomState = null

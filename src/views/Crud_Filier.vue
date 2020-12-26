@@ -21,6 +21,7 @@
                         <th>#</th>
                         <th>Label</th>						
                         <th>Titre</th>
+                        <th>Departement</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -28,7 +29,8 @@
                     <tr v-for="filier in this.info.data" :key="filier.id">
                         <td>{{filier.id}}</td>
                         <td>{{filier.label}}</td>
-                        <td>{{filier.title}}</td>                    
+                        <td>{{filier.title}}</td>
+                        <td>{{filier.departementId}}</td>                     
                         <td>
                             <a v-on:click="showModelUpdate(filier.id)" class="settings" ><i class="material-icons">&#xE8B8;</i></a>
                             <!-- <a v-on:click="deleteFilier(filier.id)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a> -->
@@ -82,6 +84,7 @@ export default {
             total: 0,
             currentEntrie : 1,
             selectedFilier : {},
+            departementList : [{ text: 'Select One', value: null }]
         }
     },
     methods:{
@@ -94,6 +97,12 @@ export default {
             const res = await  axios.get("http://localhost:8000/filiers/"+id)
             return res 
         },
+        async fetchDepartement(){
+          const response = await axios.get("http://localhost:8000/departements",this.$myauth.getBearer())
+            for(let index = 0; index < response.data.length; index++) {
+                this.departementList.push({ text:response.data[index].title , value:response.data[index].id })
+            }
+        },
         coonfirmDelet(id){
             this.selectedFilier = id
             //this.$bvModal.hide('modal-prevent-closing')
@@ -104,12 +113,12 @@ export default {
             this.selectedFilier = {}
         },
         showModel(){
-            this.$refs.addModel.show();
+            this.$refs.addModel.show(this.departementList);
             this.getTotalEntries()
         },
         async showModelUpdate(id){
             const res = await this.fetchFilier(id)
-            this.$refs.updateModel.show(res.data)
+            this.$refs.updateModel.show(res.data,this.departementList)
         },
         Next(){
             this.skip += 10
@@ -148,7 +157,8 @@ export default {
     }),
     this.$root.$on("fetchData",() => {
         return this.fetchData()
-    })
+    }),
+    this.fetchDepartement()
 
   },
   computed:{

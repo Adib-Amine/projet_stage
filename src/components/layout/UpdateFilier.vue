@@ -39,6 +39,22 @@
           ></b-form-input>
         </b-form-group>
 
+        <b-form-group
+          :state="departementState"  
+          label="Departement:" 
+          label-for="Departement-input"
+          invalid-feedback="Departement is required">
+          <b-form-select
+              id="Departement-input" 
+              v-model="departementId" 
+              ref="departement"
+              :state="departementState"
+              v-on:change="detectchange"
+              required 
+              :options="departementList">
+          </b-form-select>
+         </b-form-group>
+
         <div v-show="error">
           {{errorMessage}}
         </div>
@@ -57,6 +73,9 @@ import axios from 'axios'
         title: '',
         titleState : null,
         filierId : null,
+        departementId : null,
+        departementState : null,
+        departementList :[],
         errorMessage : null,
         filier : {},
         error : false,
@@ -64,11 +83,13 @@ import axios from 'axios'
       }
     },
     methods: {
-      show(reqfilier){
+      show(reqfilier,departementList){
           this.$refs.modalUpdate.show()
           this.label = reqfilier.label
           this.title = reqfilier.title
-          this.filierId = reqfilier.id 
+          this.filierId = reqfilier.id
+          this.departementId = reqfilier.departementId 
+          this.departementList = departementList
       },
       async updateFilier(id){
         try{
@@ -93,6 +114,8 @@ import axios from 'axios'
         this.label = ''
         this.title = ''
         this.filier = {}
+        this.departementId = null
+        this.departementList = []
         this.labelState = null
         this.titleState = null
         this.modelChange = false
@@ -116,6 +139,7 @@ import axios from 'axios'
         if(this.modelChange){
           this.filier.label = this.label
           this.filier.title = this.title
+          this.filier.departementId = this.departementId
           //this.checkRequestError()
           this.error = false
           const res = await this.updateFilier(this.filierId)
