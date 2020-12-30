@@ -1,12 +1,13 @@
 <template>
     <div class="hidden">
         <vs-navbar shadow square center-collapsed v-model="active">
-            <!-- <template #left>
-                <vs-button @click="activeSidebar = !activeSidebar" flat icon>
+            <template #left>
+                <!-- <vs-button @click="activeSidebar = !activeSidebar" flat icon>
                     <i class='bx bx-menu'></i>
-                </vs-button>
-            </template> -->
-            <vs-navbar-item :active="active == 'guide'" id="guide">
+                </vs-button> -->
+                <h5><b> TimeTable.</b></h5>
+            </template>
+            <!-- <vs-navbar-item :active="active == 'guide'" id="guide">
                 Guide
             </vs-navbar-item>
             <vs-navbar-item :active="active == 'docs'" id="docs">
@@ -17,7 +18,7 @@
             </vs-navbar-item>
             <vs-navbar-item :active="active == 'license'" id="license">
                 license
-            </vs-navbar-item>
+            </vs-navbar-item> -->
             <template #right>
                 <vs-button flat v-if="!$myauth.isAuthenticated"><router-link to="/login">Login</router-link></vs-button>
                 <vs-button  @click='logout' v-if="$myauth.isAuthenticated">Sign Out</vs-button>

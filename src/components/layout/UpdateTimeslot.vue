@@ -3,10 +3,17 @@
   <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      
       @hidden="resetModal"
       @ok="handleOk"
+      button-size="sm"
+      centered 
     >
+      <template #modal-header>
+      <!-- Emulate built in modal header close button action -->
+      <b-button size="sm" variant="outline-danger" @click="deleteTimeslot()">
+        Delete
+      </b-button>
+      </template>
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group :state="titleState" label="Matiere*" label-for="matiere-input"
           invalid-feedback="Matiere is required">
@@ -19,12 +26,11 @@
           </b-form-input>
         </b-form-group>
         
-
         <b-form-group 
           :state="profState" label="Prof*" label-for="profinput" invalid-feedback="Prof is required"
         >
           <b-form-input 
-              id="profinput" v-model="ProfId" :state="profState" ref="prof" list="proflist" required>
+              id="profinput" v-model="ProfName" :state="profState" ref="prof" list="proflist" required>
           </b-form-input>
           <b-form-datalist id="proflist" :options="profList.text"></b-form-datalist>
           <!-- <datalist id="prof-list">
@@ -38,7 +44,6 @@
           </b-form-input>
         </b-form-group>
 
-
         <b-form-group label="Text Color" label-for="textColor-input">
           <b-form-input id="textColor-input" type="color" v-model="textColor" ref="textColor">
           </b-form-input>
@@ -49,18 +54,17 @@
           </b-form-input>
         </b-form-group>
 
-        
         <div v-show="error">
           {{errorMessage}}
         </div>
-        
       </form>
     </b-modal>
 </template>
 
 <script>
 import axios from 'axios'
-  export default {
+  
+export default {
     data() {
       return {
         title: '',
@@ -81,6 +85,7 @@ import axios from 'axios'
         daysOfWeek : "",
         filierId : null,
         groupId : 0,
+        timeslotId : null,
         info : null,
         errorMessage : null,
         error : false,
@@ -113,22 +118,46 @@ import axios from 'axios'
               })
             }
       },
-      async addtimeslot(){
-      try{
-        const res = await axios.post("http://localhost:8000/timeslots", this.timeslot,this.$myauth.getBearer())
-        // const res = await axios.post("http://localhost:8000/timeslots", this.testtimeslots,this.$myauth.getBearer())
-        return res
-      }catch(err){
-        return err.response
-      }
+      async fetchTimeslot(id){
+        const res = await  axios.get("http://localhost:8000/timeslots/timeslot/"+id,this.$myauth.getBearer())
+        return res 
       },
-      showAddTimeslot(dayOfWeek,startTime,endTime,filierId,startRecur,endRecur){
-        this.daysOfWeek  = dayOfWeek
-        this.startTime = startTime
-        this.endTime = endTime
-        this.filierId = filierId
-        this.startRecur = startRecur
-        this.endRecur  =endRecur
+      async updatetimeslot(){
+        try{
+          const res = await axios.post("http://localhost:8000/timeslots/"+ this.timeslotId,this.timeslot,this.$myauth.getBearer())
+          // const res = await axios.post("http://localhost:8000/timeslots", this.testtimeslots,this.$myauth.getBearer())
+          return res
+        }catch(err){
+          return err.response
+        }
+      },
+      async deleteTimeslot(){
+        try{
+          await axios.delete('http://localhost:8000/timeslots/'+this.timeslotId,this.$myauth.getBearer())
+          this.resetModal()
+          this.updateData() 
+          this.$bvModal.hide('modal-prevent-closing')
+        }catch(err){
+          this.errorMessage = err.response
+        }
+      },
+      async showUpdateTimeslot(id){
+        const res = await this.fetchTimeslot(id)
+        this.title = res.data.title
+        this.descr = res.data.descr
+        this.numberHour = res.data.numberHour
+        this.daysOfWeek  = res.data.daysOfWeek
+        this.startTime = res.data.startTime
+        this.endTime = res.data.endTime
+        this.filierId = res.data.filierId
+        this.startRecur = res.data.startRecur
+        this.endRecur  =res.data.endRecur
+        this.textColor = res.data.textColor
+        this.color  = res.data.color
+        this.groupId = res.data.groupId
+        this.ProfId = res.data.profId
+        this.filierId = res.data.filierId
+        this.timeslotId = res.data.id
         this.$refs.modal.show()
       },
       updateData(){
@@ -173,7 +202,7 @@ import axios from 'axios'
         if (!this.checkFormValidity()) {
           return
         }
-        //add
+        this.timeslot.id = this.timeslotId
         this.timeslot.title = this.title
         this.timeslot.descr = this.descr
         this.timeslot.numberHour = this.numberHour
@@ -202,7 +231,7 @@ import axios from 'axios'
         //   profId : 4,
         //   filierId : 3
         // },
-        const res = await this.addtimeslot()
+        const res = await this.updatetimeslot()
         if(res.status !== 200){
           this.error = true
           this.errorMessage = res.data.detail
@@ -220,18 +249,31 @@ import axios from 'axios'
       this.fetchDataProf()
     },
     computed: {
-      ProfId: {
+      ProfName: {
           get(){
               return this.profName
           },
-          set(ProfId){
-              this.profName = ProfId
+          set(ProfName){
+              this.profName = ProfName
               Object.values(this.profList).forEach(val => {
-                if(val.text == ProfId)
+                if(val.text == ProfName)
                   this.profId = val.value
               });
           }
+      },
+      ProfId:{
+        get(){
+          return this.profId
+        },
+        set(ProfId){
+            this.profId = ProfId
+            Object.values(this.profList).forEach(val => {
+              if(val.value == ProfId)
+                  this.profName = val.text
+            });
+        }
       }
+      
     }
     
     

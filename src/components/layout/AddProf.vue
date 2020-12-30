@@ -3,7 +3,6 @@
       id="modal-prevent-closing"
       ref="modal"
       title="Ajouter nouveau prof" 
-      @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
     >
@@ -107,14 +106,6 @@ import axios from 'axios'
         prof : {},
         departementList :[],
         error : false,
-        testprof:  {
-          lastName : 'test',
-          firstName : 'test',
-          username : 'test',
-          password : 'test',
-          type : 'prof',
-          departementId : 1
-        }
       }
     },
     methods: {

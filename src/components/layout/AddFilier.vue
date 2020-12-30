@@ -3,7 +3,6 @@
       id="modal-prevent-closing"
       ref="modal"
       title="Submit Your Label"
-      @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
     >

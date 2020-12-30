@@ -101,10 +101,11 @@ export default {
             return res 
         },
         async fetchDepartement(){
-          const response = await axios.get("http://localhost:8000/departements",this.$myauth.getBearer())
+          const response = await axios.get("http://localhost:8000/departements?limit=10",this.$myauth.getBearer())
             for(let index = 0; index < response.data.length; index++) {
                 this.departementList.push({ text:response.data[index].title , value:response.data[index].id })
             }
+            console.log(this.departementList)
         },
         confirmDelet(id){
             this.selectedProf = id

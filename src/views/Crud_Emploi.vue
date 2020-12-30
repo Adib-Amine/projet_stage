@@ -39,12 +39,12 @@
                 </div>
                 <div class="col-xs" :class="classCell(j+1)"
                     v-for="(item, j) in items.slice(0,2).concat(null).concat(items.slice(2))" :key="j+1"
-                    v-on:click="j+1===3?'':selectedTimeslot(item)"
+                    v-on:click="j+1===3?'':selectedTimeslot(item,i,j)"
                     :style="{ color: item&&item.textColor?item.textColor:'#000', 'background-color': item&&item.color?item.color:'#fff' }">
                     <div class="box">
                         <span v-if="item">
                             {{ item.title }}<br>
-                            {{ item.profId }}
+                            {{ profList[item.id] }}
                         </span>
                     </div>
                     <div class="box" v-if="j==2"></div>
@@ -68,7 +68,7 @@
         </div>        
         </div>
         <AddTimeslot ref="addtimeslot"/>
-        <!-- <TimeSlot ref="ShowTimeTable" v-show="test" @send-emploi="testFct" /> -->
+        <UpdateTimeslot ref="updatetimeslot" />
         <!-- <h1>
             {{emploi[0].title}}
         </h1> -->
@@ -78,34 +78,33 @@
 <script>
 import axios from 'axios'
 import AddTimeslot from '../components/layout/AddTimeslot.vue'
-// import TimeSlot from '../components/layout/TableTimeslot.vue'
+import UpdateTimeslot from '../components/layout/UpdateTimeslot.vue'
+
 export default {
     components : {
-        AddTimeslot
-        // TimeSlot
+        AddTimeslot,
+        UpdateTimeslot
     },
     data(){
         return{
             filier_list : "",
-            filier_id : 1,
+            filier_id : 2,
             filier_label : null,
             filier_title : null,
             Days : ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"],
+            timeslotsMap : {
+                1: "08:30:00",
+                2: "10:30:00",
+                3: "12:30:00",
+                4: "14:00:00",
+                5: "16:00:00",
+                6: "18:00:00",
+            },
+            startRecur : '2020-11-16',
+            endRecur : '2021-01-16',
             cellStatus : true,
-            module : {
-                title : "ogrammation Orientée Objet Java",
-                nbr : "48",
-                prof : "M. NAJI",
-                salle : "75"
-            },
-            module1 : {
-                title : "",
-                nbr : "",
-                prof : "",
-                salle : ""
-            },
             emploi : [],
-            // test : false
+            profList : {}
 
         }
     },
@@ -115,65 +114,49 @@ export default {
             .get("http://localhost:8000/filiers",this.$myauth.getBearer())
             .then(response => (this.filier_list = response))
         },
+        async fetchDataProf(){
+            axios
+            .get("http://localhost:8000/profs/user/all",this.$myauth.getBearer())
+            .then(response => (this.profList = response.data))
+        },
         async fetchEmploi(filier_id){
-            // axios
-            // .get("http://localhost:8000/timeslots/filier/"+filier_id)
-            // .then(response => (this.emploi  =response))
-
-            const res = await axios.get("http://localhost:8000/timeslots/filier/"+filier_id)
-            this.emploi  = res.data
+            axios
+            .get("http://localhost:8000/timeslots/filier/"+filier_id)
+            .then(response => (this.emploi  =response.data))
         },
         async selectedFilier(filier){
             this.filier_id = filier.id
             this.filier_label = filier.label
             this.filier_title = filier.title
             await this.fetchEmploi(filier.id)
-            // this.$refs.ShowTimeTable.show(res)
-            // this.test = true
-
-            // console.log(this.emploi)
         },
-        // async sendEmploi(){
-        //     const res = await this.fetchEmploi(2)
-        //     this.emploi = res
-        //     this.$emit('send-emploi',res)
-        // },
         classCell(ind){
             if(ind != 3)
                 return "Cell"
             return "EmptyCell"
         },
-        selectedTimeslot(item){
+        selectedTimeslot(item,row, cell){
             if(!item.id)
-                this.$refs.addtimeslot.showAddTimeslot();
-            //console.log("row : ",row," cell: ",cell)
+                this.$refs.addtimeslot.showAddTimeslot(row+1,this.timeslotsMap[cell+1],this.timeslotsMap[cell+2],this.filier_id,this.startRecur,this.endRecur);
+            this.$refs.updatetimeslot.showUpdateTimeslot(item.id);
+            // console.log("row : ",row," cell: ",cell)
         },
         cellEmploi(row, cell) {
-            //row=day of week
-            //cell=1,2,4,5
-            let timeslotsMap = {
-                1: "08:30:00",
-                2: "10:30:00",
-                4: "14:00:00",
-                5: "16:00:00",
-            }
-            let dayOfWeek = row
-            let timeslot = timeslotsMap[cell]
             let emploi = this.emploi.find(entry => {
-                return entry.daysOfWeek === dayOfWeek && timeslot === entry.startTime
+                return entry.daysOfWeek === row && this.timeslotsMap[cell] === entry.startTime
             })
             return emploi
         }
     },
     mounted() {
         this.fetchFilierList()
-        // await this.fetchEmploi(2)
-    // this.$root.$on('bv::dropdown::show', bvEvent => {
-    //   console.log('Dropdown is about to be shown', bvEvent)
-    // })
+        this.$root.$on("fetchEmploiAdmin",() => {
+            return this.fetchEmploi(this.filier_id)
+        })
     },
     async created(){
-        await this.fetchEmploi(2)
+        await this.fetchEmploi(0)
+        await this.fetchDataProf()
     },
     computed : {
         Text(){
@@ -181,6 +164,7 @@ export default {
                 return this.filier_label
             return "Select Filier"
         },
+    
         
     }
 }
