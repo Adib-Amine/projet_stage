@@ -84,26 +84,10 @@ export default {
         endRecur : null,
         daysOfWeek : "",
         filierId : null,
-        groupId : 0,
         timeslotId : null,
         info : null,
         errorMessage : null,
         error : false,
-        testtimeslots: {
-          title : "string",
-          descr : "string",
-          numberHour : 0,
-          startTime : "08:30:00",
-          endTime : "10:30:00",
-          daysOfWeek : 0,
-          startRecur : "2020-12-22",
-          endRecur : "2020-12-22",
-          textColor : "string",
-          color : "string",
-          groupId : 0,
-          profId : 4,
-          filierId : 3
-        },
         timeslot : {},
 
       }
@@ -154,7 +138,6 @@ export default {
         this.endRecur  =res.data.endRecur
         this.textColor = res.data.textColor
         this.color  = res.data.color
-        this.groupId = res.data.groupId
         this.ProfId = res.data.profId
         this.filierId = res.data.filierId
         this.timeslotId = res.data.id
@@ -213,7 +196,6 @@ export default {
         this.timeslot.endRecur = this.endRecur
         this.timeslot.textColor = this.textColor
         this.timeslot.color = this.color
-        this.timeslot.groupId = 99
         this.timeslot.profId = this.profId
         this.timeslot.filierId = this.filierId
         // testtimeslots: {
@@ -227,7 +209,6 @@ export default {
         //   endRecur : "2020-12-22",
         //   textColor : "string",
         //   color : "string",
-        //   groupId : 0,
         //   profId : 4,
         //   filierId : 3
         // },

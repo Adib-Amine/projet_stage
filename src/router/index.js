@@ -7,6 +7,7 @@ import CrudFilier from '../views/Crud_Filier.vue'
 import Crud_Departement from '../views/Crud_Departement.vue'
 import CrudEmploi from '../views/Crud_Emploi.vue'
 import CrudProf from '../views/Crud_Prof.vue'
+import CrudDevoir from '../views/Crud_Devoir.vue'
 import ProfPanel from '../views/Prof_Panel.vue'
 import UpdateProfile from '../views/UpdateProfile.vue'
 import jwt_decode from "jwt-decode"
@@ -62,6 +63,14 @@ const routes = [
         path: '/update_profile',
         name : 'UpdateProfile',
         component : UpdateProfile,
+        meta : {
+          requireAuth: true
+        }
+      },
+      {
+        path: '/devoirs',
+        name : 'CrudDevoir',
+        component : CrudDevoir,
         meta : {
           requireAuth: true
         }

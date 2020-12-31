@@ -80,25 +80,9 @@ import axios from 'axios'
         endRecur : null,
         daysOfWeek : "",
         filierId : null,
-        groupId : 0,
         info : null,
         errorMessage : null,
         error : false,
-        testtimeslots: {
-          title : "string",
-          descr : "string",
-          numberHour : 0,
-          startTime : "08:30:00",
-          endTime : "10:30:00",
-          daysOfWeek : 0,
-          startRecur : "2020-12-22",
-          endRecur : "2020-12-22",
-          textColor : "string",
-          color : "string",
-          groupId : 0,
-          profId : 4,
-          filierId : 3
-        },
         timeslot : {},
 
       }
@@ -184,7 +168,6 @@ import axios from 'axios'
         this.timeslot.endRecur = this.endRecur
         this.timeslot.textColor = this.textColor
         this.timeslot.color = this.color
-        this.timeslot.groupId = 99
         this.timeslot.profId = this.profId
         this.timeslot.filierId = this.filierId
         // testtimeslots: {
@@ -198,7 +181,6 @@ import axios from 'axios'
         //   endRecur : "2020-12-22",
         //   textColor : "string",
         //   color : "string",
-        //   groupId : 0,
         //   profId : 4,
         //   filierId : 3
         // },

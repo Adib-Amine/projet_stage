@@ -58,6 +58,17 @@
         </router-link>
       </vs-sidebar-item>
 
+    
+      <vs-sidebar-item id="Devoir" v-if="this.$myauth.user_type=='prof'">
+        <template #icon>
+          <!-- <i class='bx bx-book-open'></i> -->
+          <i class='bx bx-book-content'></i>
+        </template>
+        <router-link to="/devoirs">
+        Devoir
+        </router-link>
+      </vs-sidebar-item>
+
       <vs-sidebar-item id="UpdateProfile" v-if="this.$myauth.user_type=='prof'">
         <template #icon>
           <i class='bx bx-id-card'></i>
