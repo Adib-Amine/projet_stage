@@ -5,7 +5,7 @@
                 <!-- <vs-button @click="activeSidebar = !activeSidebar" flat icon>
                     <i class='bx bx-menu'></i>
                 </vs-button> -->
-                <h5><b> TimeTable.</b></h5>
+                <h5><b> ClassTime.</b></h5>
             </template>
             <!-- <vs-navbar-item :active="active == 'guide'" id="guide">
                 Guide

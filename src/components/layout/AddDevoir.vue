@@ -2,26 +2,12 @@
     <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      title="Submit Your Label"
-      @show="resetModal"
+      title="Ajouter un Devoir"
       @hidden="resetModal"
       @ok="handleOk"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
-        <b-form-group
-          :state="labelState"
-          label="Label"
-          label-for="label-input"
-          invalid-feedback="Label is required"
-        >
-          <b-form-input
-            id="label-input"
-            v-model="label"
-            :state="labelState"
-            ref="label"
-            required
-          ></b-form-input>
-        </b-form-group>
+        
 
         <b-form-group
           :state="titleState"
@@ -38,6 +24,55 @@
           ></b-form-input>
         </b-form-group>
 
+        <b-form-group
+          :state="descrState"
+          label="Descr"
+          label-for="descr-input"
+          invalid-feedback="Description is required"
+        >
+          <b-form-input
+            id="descr-input"
+            v-model="descr"
+            :state="descrState"
+            ref="descr"
+            required
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group 
+          :state="filierState" label="Filier" label-for="filierinput" invalid-feedback="Filier is required"
+        >
+          <b-form-input 
+              id="filierinput" v-model="FilierId" :state="filierState" ref="filier" list="filierlist" required>
+          </b-form-input>
+          <b-form-datalist id="filierlist" :options="filierList.text"></b-form-datalist>
+          <!-- <datalist id="filier-list">
+              <option v-for="variant in filierList" :key="variant">{{ variant }}</option>
+          </datalist> -->
+        </b-form-group>
+
+        <b-form-group
+          :state="descrState"
+          label="Date limite"
+          label-for="date-input"
+          invalid-feedback="Date is required"
+        >
+        <b-form-input 
+            id="date-input" 
+            type="date"
+            v-model="date"
+            :state="dateState"
+            ref="date"
+            required
+            ></b-form-input><br>
+        <b-form-input 
+            id="endtime-input" 
+            type="time"
+            ></b-form-input>
+        </b-form-group>
+
+        
+
         <div v-show="error">
           {{errorMessage}}
         </div>
@@ -52,19 +87,35 @@ import axios from 'axios'
   export default {
     data() {
       return {
-        label: '',
-        labelState: null,
+        descr: '',
+        descrState: null,
         title: '',
         titleState : null,
+        date : '',
+        dateState : null,
+        filierName : '',
+        filierId : null,
+        filierState : null,
+        filierList: [],
         errorMessage : null,
-        departement : {},
+        devoir : {},
         error : false,
+        endtime : ""
       }
     },
     methods: {
-      async adddepartement(){
+      async fetchDatafilier(){
+            const total  = await axios.get("http://localhost:8000/filiers/filier/count",this.$myauth.getBearer())
+            const filiers = await axios.get("http://localhost:8000/filiers?limit="+total.data,this.$myauth.getBearer())
+            if(filiers.status === 200){
+              filiers.data.forEach(filier => {
+                this.filierList.push({text : filier.title, value : filier.id})
+              })
+            }
+      },
+      async adddevoir(){
       try{
-        const res = await axios.post("http://localhost:8000/departements", this.departement,this.$myauth.getBearer())
+        const res = await axios.post("http://localhost:8000/devoirs", this.devoir,this.$myauth.getBearer())
         return res
       }catch(err){
         return err.response
@@ -81,18 +132,18 @@ import axios from 'axios'
         this.$root.$emit('fetchData')
       },
       checkFormValidity() {
-        const validLabel = this.$refs.label.checkValidity()
+        const validDescr = this.$refs.descr.checkValidity()
         const validTitle = this.$refs.title.checkValidity()
-        this.labelState = validLabel
+        this.descrState = validDescr
         this.titleState = validTitle
-        const valid = validLabel && validTitle
+        const valid = validDescr && validTitle
         return valid
       },    
       resetModal() {
-        this.label = ''
+        this.descr = ''
         this.title = ''
-        this.departement = {}
-        this.labelState = null
+        this.devoir = {}
+        this.descrState = null
         this.titleState = null
         this.errorMessage = null
         this.error = false
@@ -108,12 +159,11 @@ import axios from 'axios'
         if (!this.checkFormValidity()) {
           return
         }
-        // Push the label to submitted labels
-        this.departement.label = this.label
-        this.departement.title = this.title
+        this.devoir.descr = this.descr
+        this.devoir.title = this.title
         //this.checkRequestError()
         this.error = false
-        // const res = await this.adddepartement()
+        // const res = await this.adddevoir()
         // if(res.status !== 200){
         //   this.error = true
         //   this.errorMessage = res.data.detail
@@ -128,6 +178,23 @@ import axios from 'axios'
         // this.updateData()
       }
     },
+    mounted() {
+      this.fetchDatafilier()
+    },
+    computed: {
+      FilierId: {
+        get(){
+              return this.filierName
+        },
+        set(FilierId){
+              this.filierName = FilierId
+              Object.values(this.filierList).forEach(val => {
+                if(val.text == FilierId)
+                  this.filierId = val.value
+              });
+        }
+      }
+    }
+}
     
-  }
 </script>
