@@ -8,6 +8,7 @@ const MyPlugin = {
             access_token : null,
             token_type : 'bearer',
             user_type : '',
+            user_id : '',
             config : {
               headers: {
                   'content-type': 'application/x-www-form-urlencoded'
@@ -21,10 +22,9 @@ const MyPlugin = {
           setToken(access_token){
               this.access_token = access_token
               this.user_type = jwt_decode(access_token).type
+              this.user_id = jwt_decode(access_token).id
               this.isAuthenticated = true
-
           },
-         
         },
         mounted() {
           if(localStorage.access_token) 

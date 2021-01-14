@@ -4,7 +4,7 @@
       <template #logo>
         <!-- ...img logo -->
       </template>
-      <vs-sidebar-item id="home">
+      <!-- <vs-sidebar-item id="home">
         <template #icon>
           <i class='bx bx-home'></i>
         </template>
@@ -14,7 +14,10 @@
         <router-link to="/prof_panel" v-else-if="this.$myauth.user_type=='prof'">
         Home
         </router-link>
-      </vs-sidebar-item>
+      </vs-sidebar-item> -->
+
+
+      
       <!-- <vs-sidebar-item id="Filier">
         <template #icon>
           <i class='bx bx-grid-alt'></i>
@@ -26,10 +29,9 @@
           <i class='bx bxs-graduation'></i>
         </template>
         <router-link to="/filier">
-        Filier
+        Filières
         </router-link>
       </vs-sidebar-item>
-
 
       <vs-sidebar-item id="Prof" v-if="this.$myauth.user_type=='admin'">
         <template #icon>
@@ -45,7 +47,7 @@
           <i class='bx bxs-building-house'></i>
         </template>
         <router-link to="/departement">
-        Departement
+        Departements
         </router-link>
       </vs-sidebar-item>
 
@@ -54,11 +56,20 @@
           <i class='bx bx-calendar-plus'></i>
         </template>
         <router-link to="/create_emploi">
-        CrudEmploi
+        Créer Emploi
         </router-link>
       </vs-sidebar-item>
 
-    
+      <vs-sidebar-item id="ProfNotifications" v-if="this.$myauth.user_type=='prof'">
+        <template #icon>
+          <!-- <i class='bx bx-book-open'></i> -->
+          <i class='bx bx-calendar'></i>
+        </template>
+        <router-link to="/prof_emploi">
+        Emploi
+        </router-link>
+      </vs-sidebar-item>
+
       <vs-sidebar-item id="Devoir" v-if="this.$myauth.user_type=='prof'">
         <template #icon>
           <!-- <i class='bx bx-book-open'></i> -->
@@ -83,35 +94,46 @@
         </template>
         Chat
       </vs-sidebar-item> -->
-      <!-- <template #footer>
-          <vs-row justify="space-between">
+      <template #footer v-if="this.$myauth.user_type=='prof'">
+          <vs-row justify="space-between" class="footbill">
+            <router-link to="/prof_notif">
             <vs-avatar badge-color="danger" badge-position="top-right">
-              <i class='bx bx-bell' ></i>
+              <i class='bx bxs-bell' ></i>
 
               <template #badge>
-                28
+                {{total}}
               </template>
             </vs-avatar>
-
-            <vs-avatar>
-              <img src="/avatars/avatar-5.png" alt="">
-            </vs-avatar>
+            </router-link>
           </vs-row>
-        </template> -->
+      </template>
     </vs-sidebar>
   </div>
 </template>
 <script>
-
+import axios from 'axios'
 export default {
     data:() => ({
       active: 'home',
-    })
+      total : 0
+    }),
+    methods : {
+      getTotalEntries(){
+            axios
+            .get("http://localhost:8000/notifs/prof/count/"+this.$myauth.user_id)
+            .then(response => (this.total = response.data))
+        },
+    },
+    mounted(){
+      this.getTotalEntries()
+    }
   }
 </script>
 <style scoped>
     .sidebarx{
-          position: fixed;
           margin-top: 44px;
+    }
+    .footbill{
+      margin-bottom:50px;
     }
   </style>

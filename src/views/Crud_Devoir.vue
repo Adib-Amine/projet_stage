@@ -89,8 +89,10 @@ export default {
     methods:{
         async fetchData(){
             axios
-            .get("http://localhost:8000/devoirs/prof/2",this.$myauth.getBearer())
-            .then(response => (this.info = response))
+            .get("http://localhost:8000/devoirs/prof/"+this.$myauth.user_id)
+            .then(response => (
+                this.info = response
+            ))
         },
         async fetchDataProf(){
             axios

@@ -1,10 +1,6 @@
 <template>
   <div class="container">
-    <!-- <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet"> -->
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-
     <br>
-
     <vs-row>
       <vs-col offset="0" w="4">
         <div class="shadow p-3 mb-5 bg-white rounded">
@@ -12,7 +8,7 @@
             <vs-col w="6">
               <vs-card type="2">
                 <template #img>
-                  <img src="https://vuesax.com/foto6.png" alt="">
+                  <img src="https://www.w3schools.com/howto/img_avatar.png" alt="">
                 </template>
                 <template #text>
                   <p>
@@ -45,38 +41,28 @@
             <div>
               <div class="margpad shadow p-3 mb-5 bg-white rounded">
                 <vs-row class="mh" align="center" justify="space-between" direction="row">
-
-                  <h4> Main Information</h4>
+                  <h4>Informations </h4>
                   <a v-on:click="showModelUpdate()" class="settings"><i style="font-size=20px;animation-duration:4s;"
                       class="fa fa-cog fa-xs fa-spin"></i></a>
                 </vs-row>
-
                 <hr>
                 <template>
                   <vs-row class="mh" justify="space-between" direction="column">
                     <div>
-                      <h5>First Name: </h5>
+                      <h6>First Name: </h6>
                       <h6 class="text-primary"> {{this.info.data.firstName}} </h6>
                     </div>
-                    <!-- <vs-col  w="4">
-            <vs-input primary v-model="info.data.firstName" state="dark" />
-          </vs-col> -->
                     <br>
                     <div>
-                      <h5>Last Name: </h5>
+                      <h6>Last Name: </h6>
                       <h6 class="text-primary"> {{this.info.data.lastName}} </h6>
                     </div>
-                    <!-- <vs-col  w="4">
-            <vs-input primary v-model="info.data.lastName" state="primary" />
-          </vs-col> -->
                     <br>
                     <div>
-                      <h5>UserName: </h5>
+                      <h6>UserName: </h6>
                       <h6 class="text-primary"> {{this.info.data.username}} </h6>
                     </div>
-                    <!-- <vs-col  w="4">
-            <vs-input primary v-model="info.data.username" state="dark" />
-          </vs-col> -->
+                    
                   </vs-row>
                 </template>
               </div>
@@ -85,11 +71,33 @@
         </vs-row>
         <vs-row>
           <vs-col offset="1">
-            <div class="bg-light">
+            <div>
               <div class="margpad shadow p-3 mb-5 bg-white rounded">
-                <h4>Secondary Information</h4>
+                <vs-row class="mh" align="center" justify="space-between" direction="row">
+                  <h4> Informations Supplémentaires</h4>
+                  <a v-on:click="showModelUpdate()" class="settings">
+                    <i class='bx bx-plus-circle bx-tada bx-rotate-270' style='color:#007bff' ></i></a>
+                </vs-row>
                 <hr>
-
+                <template>
+                <vs-row class="mh" justify="space-between" direction="column">
+                    <div>
+                      <h6>Email: </h6>
+                      <h6></h6>
+                    </div>
+                    <br>
+                    <div>
+                      <h6>Phone: </h6>
+                      <h6></h6>
+                    </div>
+                    <br>
+                    <div class="main">
+                      <h6>Adresse: </h6>
+                      <h6></h6>
+                      
+                    </div>
+                  </vs-row>
+                </template>
               </div>
             </div>
           </vs-col>
@@ -122,7 +130,6 @@ export default {
             .then(response => (this.info = response))
         },
         async showModelUpdate(){
-            // const res = await this.fetchDataProf()
             this.$refs.updateProfModel.show(this.info.data)
         },
     },
@@ -135,11 +142,23 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
   h5,h6{
     display: inline;
   }
+  h6{
+    margin-left: 30px;
+  }
+  .main{
+    width: 70%;
+    justify-content: center;
+  }
+  /* .center {
+  margin-left: 20px;
+  width: 70%;
+  padding: 10px;
+} */
 
 @media screen and (max-width: 800px) {
 h4,h6,h5

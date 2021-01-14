@@ -2,10 +2,11 @@
     <b-modal
       id="modal-prevent-closing"
       ref="modalUpdate"
-      :title="`Update Your Label ${filierId}`" 
+      :title="`Mettre à jour Filiere: ${label}`" 
       @show="resetModal"
       @hidden="resetModal"
-      @ok="handleOk">
+      @ok="handleOk"
+      centered >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
           :state="labelState"

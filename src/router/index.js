@@ -9,6 +9,8 @@ import CrudEmploi from '../views/Crud_Emploi.vue'
 import CrudProf from '../views/Crud_Prof.vue'
 import CrudDevoir from '../views/Crud_Devoir.vue'
 import ProfPanel from '../views/Prof_Panel.vue'
+import ProfEmploi from '../views/Prof_Emploi.vue'
+import ProfNotif from '../views/Prof_Notifications.vue'
 import UpdateProfile from '../views/UpdateProfile.vue'
 import jwt_decode from "jwt-decode"
 
@@ -60,6 +62,22 @@ const routes = [
     component : ProfPanel,
     children: [
       {
+        path: '/prof_notif',
+        name : 'ProfNotif',
+        component : ProfNotif,
+        meta : {
+          requireAuth: true
+        }
+      },
+      {
+        path: '/prof_emploi',
+        name : 'ProfEmploi',
+        component : ProfEmploi,
+        meta : {
+          requireAuth: true
+        }
+      },
+      {
         path: '/update_profile',
         name : 'UpdateProfile',
         component : UpdateProfile,
@@ -75,6 +93,7 @@ const routes = [
           requireAuth: true
         }
       }
+      
     ]
 
   },

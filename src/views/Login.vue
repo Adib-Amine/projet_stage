@@ -80,7 +80,7 @@ export default {
             if(this.$myauth.user_type == 'admin')
                 this.$router.push({name: 'Admin'})
             else
-                this.$router.push({name: 'ProfPanel'})
+                this.$router.push({name: 'ProfEmploi'})
         },
         showError(){
             this.error = false

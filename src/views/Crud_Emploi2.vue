@@ -1,129 +1,75 @@
 <template>
-    <b-row>
-        <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<div>
+  <sidebar id="s"/>
+<b-row align-h="center">
+    
+      
+  <b-col  cols="1"></b-col>  
+  <b-col cols="8" ><div>
+  <div class="mt-3"   v-for="j in 6" :key="j">
+    <b-card-group deck  >
+      <b-card id="cartaa" bg-variant="primary" align="center" text-variant="white" :title=Days[j-1]>
+      </b-card>
 
-        <b-col cols="2" id="Menu">
-            <Menubar />
-        </b-col>
-        <b-col cols="4">Variable width content
-            <div class="container bg-white text-dark">
-
-                <div class="row">
-                    <div class="Table">
-                        <div class="Title">
-                            <div>{{filier_title}}</div><br>
-                        </div>
-                        <div class="Heading">
-                            <div class="EmptyCell col-xs">
-                                <div class="box"></div>
-                            </div>
-                            <div class="CellDays col-xs">
-                                <div class="box">8h30 à 10h30</div>
-                            </div>
-                            <div class="CellDays col-xs">
-                                <div class="box">10h30 à 12h30</div>
-                            </div>
-                            <div class="EmptyCell col-xs">
-                                <div class="box"></div>
-                            </div>
-                            <div class="CellDays col-xs">
-                                <div class="box">14h à 16h</div>
-                            </div>
-                            <div class="CellDays col-xs">
-                                <div class="box">16h à 18h </div>
-                            </div>
-                        </div>
-
-                        <div class="Row" v-for="j in 6" :key="j">
-                            <div class="CellDays col-xs">
-                                <div class="box">{{Days[j-1]}}</div>
-                            </div>
-                            <div class="col-xs" :class="classCell(i)" v-for="i in 5" :key="i">
-                                <div class="box" v-if="i != 3" v-on:click="selectedTimeslot(j,i)">
-                                    {{module.title}} <br>
-                                    {{module.nbr}} <br>
-                                    {{module.prof}} <br>
-                                    {{module.salle}}
-                                </div>
-                                <div class="box" v-else>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-            <!-- <div class="container bg-white text-dark">
-                <div class="row">
-                    <div class="Table">
-                        <div class="Title">
-                            <div>{{filier_title}}</div><br>
-                        </div>
-                        <div class="Heading">
-                            <div class="EmptyCell col-xs">
-                                <div class="box"></div>
-                            </div>
-                            <div class="CellDays col-xs">
-                                <div class="box">8h30 à 10h30</div>
-                            </div>
-                            <div class="CellDays col-xs">
-                                <div class="box">10h30 à 12h30</div>
-                            </div>
-                            <div class="EmptyCell col-xs">
-                                <div class="box"></div>
-                            </div>
-                            <div class="CellDays col-xs">
-                                <div class="box">14h à 16h</div>
-                            </div>
-                            <div class="CellDays col-xs">
-                                <div class="box">16h à 18h </div>
-                            </div>
-                        </div>
-
-                        <div class="Row" v-for="j in 6" :key="j">
-                            <div class="CellDays col-xs">
-                                <div class="box">{{Days[j-1]}}</div>
-                            </div>
-                            <div class="col-xs" :class="classCell(i)" v-for="i in 5" :key="i">
-                                <div class="box" v-if="i != 3" v-on:click="selectedTimeslot(j,i)">
-                                    {{module.title}} <br>
-                                    {{module.nbr}} <br>
-                                    {{module.prof}} <br>
-                                    {{module.salle}}
-                                </div>
-                                <div class="box" v-else>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div> -->
-        </b-col>
-        <b-col cols="6">
-            <b-dropdown :text="Text" block variant="primary" class="m-2" menu-class="w-100">
-                <div v-for="filier in this.info.data" :key="filier.id">
-                    <b-dropdown-item v-on:click="selectedFilier(filier)">
-                        {{filier.title}}
-                    </b-dropdown-item>
-                </div>
-            </b-dropdown>
-        </b-col>
+       <b-card bg-variant="primary" text-variant="white" header="8h30 à 10h30" class="text-center">
+        <b-card-text  v-if="i != 3" v-on:click="selectedTimeslot(j,i)"> {{module.title}} <br>
+                        {{module.nbr}} <br>
+                        {{module.prof}} <br>
+                        {{module.salle}}</b-card-text>
+      </b-card>
+   <b-card bg-variant="primary" text-variant="white" header="10h30 à 12h30" class="text-center">
+        <b-card-text  v-if="i != 3" v-on:click="selectedTimeslot(j,i)"> {{module.title}} <br>
+                        {{module.nbr}} <br>
+                        {{module.prof}} <br>
+                        {{module.salle}}</b-card-text>
+    </b-card>
+   <b-card bg-variant="primary" text-variant="white" header="14h à 16h" class="text-center">
+<b-card-text  v-if="i != 3" v-on:click="selectedTimeslot(j,i)"> {{module.title}} <br>
+                        {{module.nbr}} <br>
+                        {{module.prof}} <br>
+                        {{module.salle}}</b-card-text>      </b-card>
+   <b-card bg-variant="primary" text-variant="white" header="16h à 18h" class="text-center">
+<b-card-text  v-if="i != 3" v-on:click="selectedTimeslot(j,i)"> {{module.title}} <br>
+                        {{module.nbr}} <br>
+                        {{module.prof}} <br>
+                        {{module.salle}}</b-card-text>      </b-card>
+ 
+    </b-card-group>
+  </div>
+</div>
+            
+                                                    
+    </b-col >
+    <b-col > 
+        <div id="selection" >
+        <b-dropdown :text="Text" variant="primary" class="m-2" menu-class="w-100">
+        <div v-for="filier in this.info.data" :key="filier.id">
+            <b-dropdown-item v-on:click="selectedFilier(filier)">
+                {{filier.title}}
+            </b-dropdown-item>
+        </div>
+        </b-dropdown>
+        <b-dropdown :text="Text" variant="primary" class="m-2" menu-class="w-100">
+        <div v-for="filier in this.info.data" :key="filier.id">
+            <b-dropdown-item v-on:click="selectedFilier(filier)">
+                {{filier.title}}
+            </b-dropdown-item>
+        </div>
+        </b-dropdown>
+        </div>
+    </b-col>
 
     </b-row>
-
+</div>
 </template>
 
 <script>
 import axios from 'axios'
-import Menubar from '../components/Menubar.vue'
+import Sidebar from '../components/Sidebar.vue'
 
 export default {
      components : {
-        Menubar
+          Sidebar
     },
     data(){
         return{
@@ -134,7 +80,7 @@ export default {
             Days : ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"],
             cellStatus : true,
             module : {
-                title : "ogrammation Orientée Objet Java",
+                title : "Programmation Orientée Objet Java",
                 nbr : "48",
                 prof : "M. NAJI",
                 salle : "75"
@@ -144,7 +90,7 @@ export default {
     methods : {
         async fetchData(){
             axios
-            .get("http://localhost:8000/filiers",this.$myauth.getBearer())
+            .get("http://localhost:8000/filiers")
             .then(response => (this.info = response))
         },
         selectedFilier(filier){
@@ -190,50 +136,18 @@ export default {
     font-weight: bold;
     font-size: larger;
 }
-.Table
+#selection
+{display: flex;
+margin-left:60px;
+margin-top:250px;
+position:fixed;
+flex-direction:column;
+}
+@media screen and (max-width: 800px) {
+ #selection
 {
-    display: table;
-    margin-bottom:10px;
-}
-.Heading
-{
-    display: table-row;
-    font-weight: bold;
-    text-align: center;
-}
-.Row
-{
-    display: table-row;
-    min-width: 100px;
-    height:100px;
-}
-.Cell
-{
-    display: table-cell;
-    border: solid;
-    border-width: thin;
-    height: 80px;
-    text-align: center;
-    margin: auto;
-    min-width: 260px;
-}
-.Cell:hover{
-    background-color: #dee2e6;
-}
-.CellDays{
-    display: table-cell;
-    border: solid;
-    border-width: thin;
-    height: 50px;
-    text-align: center;
-    margin: auto;
-    min-width: 100px;
-    vertical-align: middle
-}
-.EmptyCell{
-    display: table-cell;
-    min-width: 20px;
-}
-#Menu
-{   padding-top:10%;}
+margin-left:0px;
+width:50px;
+height:100px;
+}}
 </style>

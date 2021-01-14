@@ -2,9 +2,10 @@
     <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      title="Submit Your Label"
+      title="Ajouter nouvelle Filiere"
       @hidden="resetModal"
       @ok="handleOk"
+      centered 
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group

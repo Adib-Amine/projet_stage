@@ -3,7 +3,7 @@
   <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      
+      centered
       @hidden="resetModal"
       @ok="handleOk"
     >
@@ -21,17 +21,25 @@
         
 
         <b-form-group 
-          :state="profState" label="Prof*" label-for="profinput" invalid-feedback="Prof is required"
-        >
-          <b-form-input 
+          :state="profState" label="Prof" label-for="profinput" invalid-feedback="Prof is required">
+          <!-- <b-form-input 
               id="profinput" v-model="ProfId" :state="profState" ref="prof" list="proflist" required>
-          </b-form-input>
-          <b-form-datalist id="proflist" :options="profList.text"></b-form-datalist>
+          </b-form-input> -->
+          <!-- <b-form-datalist id="proflist" :options="profList.text"></b-form-datalist> -->
+          <b-form-select id="proflist" v-model="profId" :state="profState" required
+             :options="profList">
+           </b-form-select>
           <!-- <datalist id="prof-list">
               <option v-for="variant in profList" :key="variant">{{ variant }}</option>
           </datalist> -->
         </b-form-group>
-        
+         <!-- <b-form-group :state="departementState" label="Departement:" label-for="Departement-input"
+           invalid-feedback="Departement is required">
+           <b-form-select id="Departement-input" v-model="departementId" :state="departementState" required
+             :options="departementList">
+           </b-form-select>
+         </b-form-group>
+         -->
         <b-form-group :state="numberHourState" label="Numbre of Hour" label-for="nbr-input"
           invalid-feedback="Numbre of Hour is required">
           <b-form-input id="nbr-input" type="number" v-model="numberHour" :state="numberHourState" ref="numberHour" required>
@@ -72,7 +80,7 @@ import axios from 'axios'
         numberHourState : null,
         textColor: '#f7f7f7',
         color : '#0275d8' ,
-        profList: [],
+        profList: [{ text: 'Select One', value: null }],
         descr : '',
         startTime : null,
         endTime : null,
@@ -88,15 +96,15 @@ import axios from 'axios'
       }
     },
     methods: {
-      async fetchDataProf(){
-            const total  = await axios.get("http://localhost:8000/profs/prof/count",this.$myauth.getBearer())
-            const profs = await axios.get("http://localhost:8000/profs?limit="+total.data,this.$myauth.getBearer())
-            if(profs.status === 200){
-              profs.data.forEach(prof => {
-                this.profList.push({text : prof.username, value : prof.id})
-              })
-            }
-      },
+      // async fetchDataProf(){
+      //       const total  = await axios.get("http://localhost:8000/profs/prof/count",this.$myauth.getBearer())
+      //       const profs = await axios.get("http://localhost:8000/profs?limit="+total.data,this.$myauth.getBearer())
+      //       if(profs.status === 200){
+      //         profs.data.forEach(prof => {
+      //           this.profList.push({text : prof.username, value : prof.id})
+      //         })
+      //       }
+      // },
       async addtimeslot(){
       try{
         const res = await axios.post("http://localhost:8000/timeslots", this.timeslot,this.$myauth.getBearer())
@@ -106,13 +114,14 @@ import axios from 'axios'
         return err.response
       }
       },
-      showAddTimeslot(dayOfWeek,startTime,endTime,filierId,startRecur,endRecur){
+      showAddTimeslot(dayOfWeek,startTime,endTime,filierId,startRecur,endRecur,profList){
         this.daysOfWeek  = dayOfWeek
         this.startTime = startTime
         this.endTime = endTime
         this.filierId = filierId
         this.startRecur = startRecur
         this.endRecur  =endRecur
+        this.profList = profList
         this.$refs.modal.show()
       },
       updateData(){
@@ -198,9 +207,9 @@ import axios from 'axios'
         })
       }
     },
-    mounted() {
-      this.fetchDataProf()
-    },
+    // mounted() {
+    //   this.fetchDataProf()
+    // },
     computed: {
       ProfId: {
           get(){

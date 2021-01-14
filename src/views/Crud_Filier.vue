@@ -6,10 +6,10 @@
             <div class="table-title bg-primary">
                 <div class="row">
                     <div class="col-sm-5">
-                        <h2><b>Filiers</b></h2>
+                        <h2><b>Filières</b></h2>
                     </div>
                     <div class="col-sm-7">
-                        <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Filier<AddFilier ref="addModel" /></span></a>
+                        <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Filiere<AddFilier ref="addModel" /></span></a>
                         <!-- @add-filier="updateTab" -->
                         <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						
                     </div>
@@ -30,7 +30,13 @@
                         <td>{{filier.id}}</td>
                         <td>{{filier.label}}</td>
                         <td>{{filier.title}}</td>
-                        <td>{{filier.departementId}}</td>                     
+                        <td>
+                        <div v-for="dl in departementList" :key="dl">
+                                <div v-if="dl.value==filier.departementId">
+                                    {{dl.text}}
+                                </div>
+                        </div> 
+                        </td>                     
                         <td>
                             <a v-on:click="showModelUpdate(filier.id)" class="settings" ><i class="material-icons">&#xE8B8;</i></a>
                             <!-- <a v-on:click="deleteFilier(filier.id)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a> -->
@@ -39,7 +45,7 @@
                     </tr>
                 </tbody>
             </table>
-            <b-modal id="bv-modal-delete" hide-footer @hidden="resetModal">
+            <b-modal id="bv-modal-delete" hide-footer @hidden="resetModal" centered>
                 <div class="d-block text-center">
                     <h3>Etes-vous sûr que vous voulez supprimer : {{selectedFilier.label}}?</h3>
                 </div>
