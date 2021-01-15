@@ -119,7 +119,7 @@ import axios from 'axios'
         this.textNotifState = null
         this.title = ''
         this.titleState = null
-        this.filierList = {}
+        this.filierList = []
         this.notif_date = ""
         this.notif_time = ""
         this.notif = {}

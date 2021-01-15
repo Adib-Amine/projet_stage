@@ -12,6 +12,10 @@ import ProfPanel from '../views/Prof_Panel.vue'
 import ProfEmploi from '../views/Prof_Emploi.vue'
 import ProfNotif from '../views/Prof_Notifications.vue'
 import UpdateProfile from '../views/UpdateProfile.vue'
+import EtudiantPanel from '../views/Etudiant_Panel.vue'
+import EtudiantNotif from '../views/Etudiant_Notif.vue'
+import EtudiantDevoir from '../views/Etudiant_Devoir.vue'
+import EtudiantEmploi from "../views/Etudiant_Emploi.vue"
 import jwt_decode from "jwt-decode"
 
 Vue.use(VueRouter)
@@ -98,6 +102,38 @@ const routes = [
 
   },
   {
+    path: './etudiant_panel',
+    name : 'EtudiantPanel',
+    component : EtudiantPanel,
+    children : [
+      {
+        path: '/etudiant_notif',
+        name : 'EtudiantNotif',
+        component : EtudiantNotif,
+        meta : {
+          requireAuth: true
+        }
+      },
+      {
+        path: '/emploi',
+        name: 'EtudiantEmploi',
+        component: EtudiantEmploi,
+        meta : {
+          requireAuth: true
+        }
+      },
+      {
+        path: '/etudiant_devoir',
+        name: 'EtudiantDevoir',
+        component: EtudiantDevoir,
+        meta : {
+          requireAuth: true
+        }
+      },
+
+    ]
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login
@@ -107,11 +143,7 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  {
-    path: '/student',
-    name: 'Student',
-    component: () => import('../views/Emploi.vue')
-  },
+  
   
   // otherwise redirect to home
   // { path: '*', redirect: '/' }

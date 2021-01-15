@@ -9,9 +9,6 @@
                         <h2><b>Devoirs</b></h2>
                     </div>
                     <div class="col-sm-7">
-                        <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Devoir<AddDevoir ref="addDevoirModel" /></span></a>
-                        <!-- @add-devoir="updateTab" -->
-                        <!-- <AddDevoir ref="addDevoirModel" /> -->
                     </div>
                 </div>
             </div>
@@ -20,30 +17,20 @@
                     <tr>
                         <th>#</th>
                         <th>Titre</th>
-                        <th>Action</th>
+                        <th>Date Limite</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="devoir in this.info.data" :key="devoir.id">
+                    <tr v-for="devoir in this.info" :key="devoir.id">
                         <td>{{devoir.id}}</td>
                         <td @mouseover="isHovering = true" @mouseout="isHovering = false">
                             <i :class="isHovering ? 'bx bxs-notepad' : 'bx bx-notepad'"></i> {{devoir.title}}
-                        </td>                    
-                        <td>
-                            <a v-on:click="showModelUpdate(devoir)" class="settings" ><i class="material-icons">&#xE8B8;</i></a>
-                            <!-- <a v-on:click="deleteDevoir(devoir.id)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a> -->
-                            <a v-on:click="coonfirmDelet(devoir)" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
                         </td>
+                        <!-- {{devoir.endRecur}},  {{devoir.endTime.slice(0,5)}} -->
+                        <td> <span v-text="currentDateTime(devoir.endRecur,devoir.endTime)"></span></td>                    
                     </tr>
                 </tbody>
             </table>
-            <b-modal id="bv-modal-delete" hide-footer @hidden="resetModal">
-                <div class="d-block text-center">
-                    <h3>Etes-vous sûr que vous voulez supprimer : {{selectedDevoir.label}}?</h3>
-                </div>
-                <b-button class="mt-3" variant="danger" block @click="deleteDevoir()">Delete</b-button>
-            </b-modal>
-            <UpdateDevoir ref="updateModel"/>
             <div class="clearfix">
                 <div class="hint-text">Showing <b>{{currentEntrie}}</b> out of <b>{{calcEntries}}</b> entries</div>
                 <ul class="pagination">
@@ -54,25 +41,16 @@
             </div>
         </div>
     </div>
-    </div> 
-
-    
-
+    </div>
+     
     </div>
 </template>
 
 <script>
 import axios from 'axios'
-import AddDevoir from '../components/layout/AddDevoir.vue'
-import UpdateDevoir from '../components/layout/UpdateDevoir.vue'
-
+import moment from 'moment'
 
 export default {
-    name: 'CrudDevoir',
-    components : {
-        AddDevoir,
-        UpdateDevoir
-    },
     data(){
         return{
             info : "",
@@ -83,46 +61,21 @@ export default {
             selectedDevoir : {},
             prof : "",
             isHovering: false,
-            filierList: [],
+            date_devoir : ''
         }
     },
     methods:{
         async fetchData(){
             axios
-            .get("http://localhost:8000/devoirs/prof/"+this.$myauth.user_id)
+            .get("http://localhost:8000/devoirs/filier/"+this.$myauth.user_id)
             .then(response => (
-                this.info = response
+                this.info = response.data
             ))
         },
         async fetchDataProf(){
             axios
             .get("http://localhost:8000/profs/user/me",this.$myauth.getBearer())
             .then(response => (this.prof = response.data))
-        },
-        async fetchDatafilier(){
-            const total  = await axios.get("http://localhost:8000/filiers/filier/count",this.$myauth.getBearer())
-            const filiers = await axios.get("http://localhost:8000/filiers?limit="+total.data,this.$myauth.getBearer())
-            if(filiers.status === 200){
-              filiers.data.forEach(filier => {
-                this.filierList.push({text : filier.title, value : filier.id})
-              })
-            }
-        },
-        coonfirmDelet(id){
-            this.selectedDevoir = id
-            this.$bvModal.show('bv-modal-delete')
-        },
-        resetModal(){
-            this.selectedDevoir = {}
-        },
-        showModel(){
-            this.$refs.addDevoirModel.show(this.filierList);
-            this.getTotalEntries()
-            this.fetchData()
-        },
-        showModelUpdate(devoir){
-            this.$refs.updateModel.show(devoir,this.filierList)
-            this.fetchData()
         },
         Next(){
             this.skip += 10
@@ -137,35 +90,24 @@ export default {
             this.fetchData()
             
         },
-        async deleteDevoir(){
-            await axios.delete('http://localhost:8000/devoirs/'+this.selectedDevoir.id,this.$myauth.getBearer())
-                //.then(this.fetchData());
-            await this.fetchData();
-            this.getTotalEntries()
-            this.resetModal
-            this.$bvModal.hide('bv-modal-delete')
-
-        },
         getTotalEntries(){
             axios
             .get("http://localhost:8000/devoirs/prof/count/1")
             .then(response => (this.total = response.data))
         },
+        currentDateTime(endRecur,endTime) {
+            let local = moment(endRecur.concat(" ".concat(endTime)))
+            local.locale('fr')
+            return local.format('LLL')
+        },
         
     },
     mounted () {
-    this.fetchData(),
-    this.getTotalEntries(),
-    this.fetchDatafilier()
-    this.$root.$on("getTotalEntries",() => {
-        return this.getTotalEntries()
-    }),
-    this.$root.$on("fetchData",() => {
-        return this.fetchData()
-    })
-
-  },
-  computed:{
+        this.fetchData()
+        this.getTotalEntries()
+        this.currentDateTime()
+    },
+    computed:{
         calcEntries(){
             if(this.total%10 == 0)
                 return Math.floor(this.total/10)
@@ -184,7 +126,16 @@ export default {
             else
                 return false   
         },
-  }
+        // ConverteDate:{
+        //     get(){
+        //         return this
+        //     },
+        //     set(ConverteDate){
+        //         this.date_devoir  = ConverteDate
+
+        //     }
+        // }
+    }
 }
 </script>
 
@@ -251,7 +202,7 @@ table.table tr th:first-child {
     width: 60px;
 }
 table.table tr th:last-child {
-    width: 100px;
+    width: 250px;
 }
 table.table-striped tbody tr:nth-of-type(odd) {
     background-color: #fcfcfc;

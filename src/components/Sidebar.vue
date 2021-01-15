@@ -2,28 +2,25 @@
   <div class="hidden">
     <vs-sidebar absolute hover-expand reduce v-model="active" open class="sidebarx">
       <template #logo>
-        <!-- ...img logo -->
       </template>
-      <!-- <vs-sidebar-item id="home">
-        <template #icon>
-          <i class='bx bx-home'></i>
-        </template>
-        <router-link to="/admin" v-if="this.$myauth.user_type=='admin'">
-        Home
-        </router-link>
-        <router-link to="/prof_panel" v-else-if="this.$myauth.user_type=='prof'">
-        Home
-        </router-link>
-      </vs-sidebar-item> -->
 
-
-      
-      <!-- <vs-sidebar-item id="Filier">
+      <vs-sidebar-item id="Emploi" v-if="this.$myauth.user_type=='filiere'">
         <template #icon>
-          <i class='bx bx-grid-alt'></i>
+          <i class='bx bxs-calendar'></i>
         </template>
-        Filier
-      </vs-sidebar-item> -->
+        <router-link to="/emploi">
+        Emploi
+        </router-link>
+      </vs-sidebar-item>
+      <vs-sidebar-item id="Devoir" v-if="this.$myauth.user_type=='filiere'">
+        <template #icon>
+          <i class='bx bx-book-content'></i>
+        </template>
+        <router-link to="/etudiant_devoir">
+        Devoir
+        </router-link>
+      </vs-sidebar-item>
+
       <vs-sidebar-item id="Filier" v-if="this.$myauth.user_type=='admin'">
         <template #icon>
           <i class='bx bxs-graduation'></i>
@@ -94,17 +91,14 @@
         </template>
         Chat
       </vs-sidebar-item> -->
-      <template #footer v-if="this.$myauth.user_type=='prof'">
+      <template #footer v-if="this.$myauth.user_type!='admin'">
           <vs-row justify="space-between" class="footbill">
-            <router-link to="/prof_notif">
-            <vs-avatar badge-color="danger" badge-position="top-right">
+            <vs-avatar v-on:click="NotifRouter" badge-color="danger" badge-position="top-right">
               <i class='bx bxs-bell' ></i>
-
               <template #badge>
-                {{total}}
+                7
               </template>
             </vs-avatar>
-            </router-link>
           </vs-row>
       </template>
     </vs-sidebar>
@@ -122,10 +116,16 @@ export default {
             axios
             .get("http://localhost:8000/notifs/prof/count/"+this.$myauth.user_id)
             .then(response => (this.total = response.data))
-        },
+      },
+      NotifRouter(){
+        if(this.$myauth.user_type=='prof')
+          this.$router.push({name: 'ProfNotif'})
+        else
+          this.$router.push({name: 'EtudiantNotif'})
+      }
     },
     mounted(){
-      this.getTotalEntries()
+      // this.getTotalEntries()
     }
   }
 </script>

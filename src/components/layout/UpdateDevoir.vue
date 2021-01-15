@@ -109,16 +109,22 @@ import axios from 'axios'
     methods: {
       async adddevoir() {
         try {
-          const res = await axios.post("http://localhost:8000/devoirs", this.devoir, this.$myauth.getBearer())
+          const res = await axios.post("http://localhost:8000/devoirs/"+this.devoir.id, this.devoir, this.$myauth.getBearer())
           return res
         } catch (err) {
           return err.response
         }
       },
       
-      show(filierList){
-          this.filierList = filierList
-          this.$refs.modal.show()
+      show(devoir,filierList){
+        this.$refs.modal.show()
+        this.filierList = filierList
+        this.title = devoir.title
+        this.filierName = devoir.filierId
+        this.descr  =devoir.descr
+        this.date = devoir.endRecur
+        this.endTime  = devoir.endTime
+        this.devoir = devoir
       },
       updateTotal(){
         this.$root.$emit('getTotalEntries')
@@ -147,7 +153,6 @@ import axios from 'axios'
         this.endTime = ''
         this.devoir = {}
         this.filierList = []
-        this.filierName = ''
         this.descrState = null
         this.titleState = null
         this.errorMessage = null
@@ -164,12 +169,9 @@ import axios from 'axios'
         if (!this.checkFormValidity()) {
           return
         }
-        let d = new Date()
         this.devoir.descr = this.descr
         this.devoir.title = this.title
-        this.devoir.startRecur = d.toISOString().split('T')[0] 
         this.devoir.endRecur = this.date
-        this.devoir.startTime = d.toTimeString().split(' ')[0] 
         this.devoir.endTime = this.endTime
         this.devoir.matiereId = 1
         this.devoir.filierId = this.filierName
@@ -187,12 +189,12 @@ import axios from 'axios'
                         this.$bvModal.hide('modal-prevent-closing')
                       })
         //call getTotal methode from parent componet to update total
-        this.updateTotal()
+        // this.updateTotal()
         this.updateData()
       }
     },
     mounted() {
-      this.fetchDatafilier()
+      // this.fetchDatafilier()
     },
     computed: {
       FilierId: {
