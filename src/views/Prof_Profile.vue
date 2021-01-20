@@ -22,7 +22,7 @@
           <vs-row class="mh" align="center" justify="space-around" direction="column">
             <vs-col w="6">
               <br>
-              <h3 align="center">{{this.info.data.lastName + ' ' +  this.info.data.firstName}}</h3>
+              <h3 align="center">{{this.info.lastName + ' ' +  this.info.firstName}}</h3>
             </vs-col>
             <vs-col w="9" align="center">
               <h6>Département mathématiques </h6>
@@ -50,17 +50,17 @@
                   <vs-row class="mh" justify="space-between" direction="column">
                     <div>
                       <h6>First Name: </h6>
-                      <h6 class="text-primary"> {{this.info.data.firstName}} </h6>
+                      <h6 class="text-primary"> {{this.info.firstName}} </h6>
                     </div>
                     <br>
                     <div>
                       <h6>Last Name: </h6>
-                      <h6 class="text-primary"> {{this.info.data.lastName}} </h6>
+                      <h6 class="text-primary"> {{this.info.lastName}} </h6>
                     </div>
                     <br>
                     <div>
                       <h6>UserName: </h6>
-                      <h6 class="text-primary"> {{this.info.data.username}} </h6>
+                      <h6 class="text-primary"> {{this.info.username}} </h6>
                     </div>
                     
                   </vs-row>
@@ -120,21 +120,29 @@ export default {
     data(){
       return {
         info : "",
-        value :''
+        value :'',
+        departementList : [{ text: 'Select One', value: null }]
       }
     },
     methods:{
        async fetchDataProf(){
             axios
             .get("http://localhost:8000/profs/user/me",this.$myauth.getBearer())
-            .then(response => (this.info = response))
+            .then(response => (this.info = response.data))
         },
         async showModelUpdate(){
-            this.$refs.updateProfModel.show(this.info.data)
+            this.$refs.updateProfModel.show(this.info,this.departementList)
+        },
+        async fetchDepartement(){
+          const response = await axios.get("http://localhost:8000/departements",this.$myauth.getBearer())
+            for(let index = 0; index < response.data.length; index++) {
+                this.departementList.push({ text:response.data[index].title , value:response.data[index].id })
+            }
         },
     },
     mounted(){
       this.fetchDataProf()
+      this.fetchDepartement()
       this.$root.$on("fetchDataProf",() => {
         return this.fetchDataProf()
     })

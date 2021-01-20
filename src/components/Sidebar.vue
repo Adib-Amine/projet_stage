@@ -63,6 +63,14 @@
           <i class='bx bx-calendar'></i>
         </template>
         <router-link to="/prof_emploi">
+        Emploi Personnel
+        </router-link>
+      </vs-sidebar-item>
+      <vs-sidebar-item id="EmploiClass" v-if="this.$myauth.user_type=='prof'">
+        <template #icon>
+          <i class='bx bxs-calendar'></i>
+        </template>
+        <router-link to="/emploi">
         Emploi
         </router-link>
       </vs-sidebar-item>

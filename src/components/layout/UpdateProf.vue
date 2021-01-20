@@ -6,6 +6,7 @@
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
+      centered
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
