@@ -11,7 +11,7 @@
                     <div class="col-sm-7">
                         <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Filiere<AddFilier ref="addModel" /></span></a>
                         <!-- @add-filier="updateTab" -->
-                        <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						
+                        <!-- <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						 -->
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                         <td>{{filier.label}}</td>
                         <td>{{filier.title}}</td>
                         <td>
-                        <div v-for="dl in departementList" :key="dl">
+                        <div v-for="dl in departementList" :key="dl.value">
                                 <div v-if="dl.value==filier.departementId">
                                     {{dl.text}}
                                 </div>

@@ -11,7 +11,7 @@
                     <div class="col-sm-7">
                         <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Departement<AddDepartement ref="addDepartementModel" /></span></a>
                         <!-- @add-departement="updateTab" -->
-                        <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						
+                        <!-- <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						 -->
                     </div>
                 </div>
             </div>

@@ -36,7 +36,7 @@
                     <div class="box">
                         <span v-if="item">
                             {{ item.title }}<br>
-                            <div v-for="fl in filierList" :key="fl">
+                            <div v-for="fl in filierList" :key="fl.id">
                                 <div v-if="fl.id==item.filierId">
                                     {{fl.label}}
                                 </div>

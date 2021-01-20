@@ -15,18 +15,16 @@
             <table class="table table-striped table-hover table-white">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <!-- <th>#</th> -->
                         <th>Titre</th>
                         <th>Date Limite</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="devoir in this.info" :key="devoir.id">
-                        <td>{{devoir.id}}</td>
+                    <tr v-for="devoir in this.info" :key="devoir.id" v-on:click="showModel(devoir)">
                         <td @mouseover="isHovering = true" @mouseout="isHovering = false">
                             <i :class="isHovering ? 'bx bxs-notepad' : 'bx bx-notepad'"></i> {{devoir.title}}
                         </td>
-                        <!-- {{devoir.endRecur}},  {{devoir.endTime.slice(0,5)}} -->
                         <td> <span v-text="currentDateTime(devoir.endRecur,devoir.endTime)"></span></td>                    
                     </tr>
                 </tbody>
@@ -41,16 +39,20 @@
             </div>
         </div>
     </div>
+    <PopUpDevoir ref="popupdevoir" />
     </div>
-     
     </div>
 </template>
 
 <script>
 import axios from 'axios'
 import moment from 'moment'
+import PopUpDevoir from '../components/layout/PopUpDevoir.vue'
 
 export default {
+    components : {
+        PopUpDevoir
+    },
     data(){
         return{
             info : "",
@@ -76,6 +78,9 @@ export default {
             axios
             .get("http://localhost:8000/profs/user/me",this.$myauth.getBearer())
             .then(response => (this.prof = response.data))
+        },
+        showModel(devoir){
+            this.$refs.popupdevoir.show(devoir)
         },
         Next(){
             this.skip += 10
@@ -126,15 +131,6 @@ export default {
             else
                 return false   
         },
-        // ConverteDate:{
-        //     get(){
-        //         return this
-        //     },
-        //     set(ConverteDate){
-        //         this.date_devoir  = ConverteDate
-
-        //     }
-        // }
     }
 }
 </script>
@@ -202,7 +198,7 @@ table.table tr th:first-child {
     width: 60px;
 }
 table.table tr th:last-child {
-    width: 250px;
+    width: 100px;
 }
 table.table-striped tbody tr:nth-of-type(odd) {
     background-color: #fcfcfc;

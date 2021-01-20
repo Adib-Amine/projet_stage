@@ -96,7 +96,7 @@
             <vs-avatar v-on:click="NotifRouter" badge-color="danger" badge-position="top-right">
               <i class='bx bxs-bell' ></i>
               <template #badge>
-                7
+                *
               </template>
             </vs-avatar>
           </vs-row>

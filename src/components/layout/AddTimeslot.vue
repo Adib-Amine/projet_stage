@@ -96,19 +96,9 @@ import axios from 'axios'
       }
     },
     methods: {
-      // async fetchDataProf(){
-      //       const total  = await axios.get("http://localhost:8000/profs/prof/count",this.$myauth.getBearer())
-      //       const profs = await axios.get("http://localhost:8000/profs?limit="+total.data,this.$myauth.getBearer())
-      //       if(profs.status === 200){
-      //         profs.data.forEach(prof => {
-      //           this.profList.push({text : prof.username, value : prof.id})
-      //         })
-      //       }
-      // },
       async addtimeslot(){
       try{
         const res = await axios.post("http://localhost:8000/timeslots", this.timeslot,this.$myauth.getBearer())
-        // const res = await axios.post("http://localhost:8000/timeslots", this.testtimeslots,this.$myauth.getBearer())
         return res
       }catch(err){
         return err.response
@@ -129,12 +119,12 @@ import axios from 'axios'
       },
       checkFormValidity() {
         const validTitle = this.$refs.title.checkValidity()
-        const validProf = this.$refs.prof.checkValidity()
+        // const validProf = this.$refs.prof.checkValidity()
         const validNbrHour = this.$refs.numberHour.checkValidity()
         this.titleState = validTitle
-        this.profState = validProf
+        // this.profState = validProf
         this.numberHourState = validNbrHour
-        const valid = validTitle && validProf && validNbrHour
+        const valid = validTitle && validNbrHour
         return valid
       },
       resetModal() {
@@ -179,20 +169,6 @@ import axios from 'axios'
         this.timeslot.color = this.color
         this.timeslot.profId = this.profId
         this.timeslot.filierId = this.filierId
-        // testtimeslots: {
-        //   title : "string",
-        //   descr : "string",
-        //   numberHour : 0,
-        //   startTime : "08:30:00",
-        //   endTime : "10:30:00",
-        //   daysOfWeek : 0,
-        //   startRecur : "2020-12-22",
-        //   endRecur : "2020-12-22",
-        //   textColor : "string",
-        //   color : "string",
-        //   profId : 4,
-        //   filierId : 3
-        // },
         const res = await this.addtimeslot()
         if(res.status !== 200){
           this.error = true
@@ -207,9 +183,6 @@ import axios from 'axios'
         })
       }
     },
-    // mounted() {
-    //   this.fetchDataProf()
-    // },
     computed: {
       ProfId: {
           get(){

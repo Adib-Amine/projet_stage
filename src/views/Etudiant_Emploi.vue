@@ -40,7 +40,7 @@
                     <div class="box">
                         <span v-if="item">
                             {{ item.title }}<br>
-                            <div v-for="pn in profList" :key="pn">
+                            <div v-for="pn in profList" :key="pn.value">
                                 <div v-if="pn.value==item.profId">
                                     {{pn.text}}
                                 </div>

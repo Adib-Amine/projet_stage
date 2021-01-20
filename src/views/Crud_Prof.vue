@@ -11,7 +11,7 @@
                     <div class="col-sm-7">
                         <a v-on:click="showModel" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Ajouter nouveau Prof<AddProf ref="addProfModel" /></span></a>
                         <!-- @add-prof="updateTab" -->
-                        <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						
+                        <!-- <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Exporter vers Excel</span></a>						 -->
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                         <th>#</th>
                         <th>Nom</th>						
                         <th>Prenom</th>
-                        <th>Username</th>
+                        <!-- <th>Username</th> -->
                         <th>Departement</th>
                         <th>Action</th>
                     </tr>
@@ -31,8 +31,15 @@
                         <td>{{prof.id}}</td>
                         <td>{{prof.lastName}}</td>
                         <td>{{prof.firstName}}</td>
-                        <td>{{prof.username}}</td>
-                        <td>{{prof.departementId}}</td>
+                        <!-- <td>{{prof.username}}</td> -->
+                        <!-- <td>{{prof.departementId}}</td> -->
+                        <td>
+                        <div v-for="dl in departementList" :key="dl.value">
+                                <div v-if="dl.value==prof.departementId">
+                                    {{dl.text}}
+                                </div>
+                        </div>
+                        </td>
                         <!-- <td>{{prof.password}}</td>                     -->
                         <td>
                             <a v-on:click="showModelUpdate(prof.id)" class="settings" ><i class="material-icons">&#xE8B8;</i></a>

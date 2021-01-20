@@ -78,7 +78,7 @@ export default {
         },
         redirect() {
             if(this.$myauth.user_type == 'admin')
-                this.$router.push({name: 'Admin'})
+                this.$router.push({name: 'Filier'})
             else{
                 if(this.$myauth.user_type == 'prof')
                     this.$router.push({name: 'ProfEmploi'})

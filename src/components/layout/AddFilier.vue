@@ -52,6 +52,20 @@
           </b-form-select>
          </b-form-group>
 
+         <b-form-group
+          :state="passwordState"
+          label="Password: "
+          label-for="Password-input"  
+          invalid-feedback="Password is required">
+          <b-form-input
+            id="Password-input"
+            v-model="password"
+            ref="password"
+            :state="passwordState"
+            required>
+          </b-form-input>
+        </b-form-group>
+
         <div v-show="error">
           {{errorMessage}}
         </div>
@@ -70,6 +84,8 @@ import axios from 'axios'
         labelState: null,
         title: '',
         titleState : null,
+        password : '',
+        passwordState : null,
         departementId : null,
         departementState : null,
         departementList :[],
@@ -101,19 +117,23 @@ import axios from 'axios'
       checkFormValidity() {
         const validLabel = this.$refs.label.checkValidity()
         const validTitle = this.$refs.title.checkValidity()
+        const validPassword = this.$refs.password.checkValidity()
         this.labelState = validLabel
         this.titleState = validTitle
-        const valid = validLabel && validTitle
+        this.passwordState = validPassword
+        const valid = validLabel && validTitle && validPassword
         return valid
       },    
       resetModal() {
         this.label = ''
         this.title = ''
+        this.password = ''
         this.departementId = null
         this.filier = {}
         this.departementList = []
         this.labelState = null
         this.titleState = null
+        this.passwordState = null
         this.errorMessage = null
         this.error = false
       },
@@ -131,6 +151,9 @@ import axios from 'axios'
         // Push the label to submitted labels
         this.filier.label = this.label
         this.filier.title = this.title
+        this.filier.username = this.label
+        this.filier.password = this.password
+        this.filier.type = "filiere"
         this.filier.departementId = this.departementId
         
         //this.checkRequestError()

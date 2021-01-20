@@ -56,6 +56,20 @@
           </b-form-select>
          </b-form-group>
 
+         <b-form-group
+          label="Add new password: "
+          label-for="Password-input"  
+          >
+          <b-form-input
+            id="Password-input"
+            v-model="password"
+            ref="password"
+            v-on:change="detectchange"
+            
+            >
+          </b-form-input>
+        </b-form-group>
+
         <div v-show="error">
           {{errorMessage}}
         </div>
@@ -73,6 +87,9 @@ import axios from 'axios'
         labelState: null,
         title: '',
         titleState : null,
+        password : '',
+        password2 : '',
+        // passwordState : null,
         filierId : null,
         departementId : null,
         departementState : null,
@@ -88,7 +105,9 @@ import axios from 'axios'
           this.$refs.modalUpdate.show()
           this.label = reqfilier.label
           this.title = reqfilier.title
+          this.password2 = reqfilier.password
           this.filierId = reqfilier.id
+          this.filier = reqfilier
           this.departementId = reqfilier.departementId 
           this.departementList = departementList
       },
@@ -112,8 +131,11 @@ import axios from 'axios'
         return valid
       },    
       resetModal() {
+        this.modelChange = false
         this.label = ''
         this.title = ''
+        this.password = ''
+        this.password2 = ''
         this.filier = {}
         this.departementId = null
         this.departementList = []
@@ -140,6 +162,8 @@ import axios from 'axios'
         if(this.modelChange){
           this.filier.label = this.label
           this.filier.title = this.title
+          this.filier.username = this.label
+          this.filier.password = this.password == null ? "" : this.password2
           this.filier.departementId = this.departementId
           //this.checkRequestError()
           this.error = false

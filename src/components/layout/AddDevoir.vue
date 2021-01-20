@@ -5,10 +5,12 @@
       title="Ajouter un Devoir"
       @hidden="resetModal"
       @ok="handleOk"
+      size="lg"
+      centered
+      button-size="sm"      
+      
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
-        
-
         <b-form-group
           :state="titleState"
           label="Title: "
@@ -190,9 +192,6 @@ import axios from 'axios'
         this.updateTotal()
         this.updateData()
       }
-    },
-    mounted() {
-      this.fetchDatafilier()
     },
     computed: {
       FilierId: {

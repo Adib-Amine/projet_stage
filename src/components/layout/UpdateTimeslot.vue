@@ -109,7 +109,6 @@ export default {
       async updatetimeslot(){
         try{
           const res = await axios.post("http://localhost:8000/timeslots/"+ this.timeslotId,this.timeslot,this.$myauth.getBearer())
-          // const res = await axios.post("http://localhost:8000/timeslots", this.testtimeslots,this.$myauth.getBearer())
           return res
         }catch(err){
           return err.response
@@ -198,20 +197,6 @@ export default {
         this.timeslot.color = this.color
         this.timeslot.profId = this.profId
         this.timeslot.filierId = this.filierId
-        // testtimeslots: {
-        //   title : "string",
-        //   descr : "string",
-        //   numberHour : 0,
-        //   startTime : "08:30:00",
-        //   endTime : "10:30:00",
-        //   daysOfWeek : 0,
-        //   startRecur : "2020-12-22",
-        //   endRecur : "2020-12-22",
-        //   textColor : "string",
-        //   color : "string",
-        //   profId : 4,
-        //   filierId : 3
-        // },
         const res = await this.updatetimeslot()
         if(res.status !== 200){
           this.error = true
